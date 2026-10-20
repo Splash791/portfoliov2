@@ -61,7 +61,15 @@ export default function Projects() {
         Projects
       </h2>
 
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {/* Bento grid: FarmOS (featured: true) spans 2 columns via
+          ProjectCard's own span classes -- width-only, no row-span/fixed
+          row height, so every card keeps natural content height and
+          nothing risks clipping. `grid-flow-dense` lets smaller tiles
+          fill in beside the wide one instead of leaving a gap. Mobile
+          stays a plain single-column stack (span classes are sm:/lg:-
+          gated), so FarmOS there just reads as a card with visible full
+          summary + metric badge, not a forced shape that doesn't fit. */}
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:grid-flow-dense lg:grid-cols-3">
         {projects.map((project, i) => (
           <ProjectCard
             key={project.slug}

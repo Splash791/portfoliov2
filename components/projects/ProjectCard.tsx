@@ -32,6 +32,7 @@ export default function ProjectCard({
 }) {
   const gradient = GRADIENTS[index % GRADIENTS.length];
   const stackPreview = project.stack.slice(0, 3);
+  const featured = !!project.featured;
 
   return (
     <motion.button
@@ -53,17 +54,47 @@ export default function ProjectCard({
       }
       transition={{ duration: 0.2 }}
       style={isOpen ? { opacity: 0, pointerEvents: "none" } : undefined}
-      className="glass flex flex-col overflow-hidden rounded-[1.75rem] text-left"
+      className={`glass relative flex flex-col overflow-hidden rounded-[1.75rem] text-left ${
+        // Bento sizing: the featured tile spans 2 columns so it reads as
+        // the standout tile. Deliberately width-only, no row-span/fixed
+        // row height -- every card keeps natural content-driven height,
+        // so nothing risks clipping inside a forced-height grid cell.
+        featured ? "sm:col-span-2 lg:col-span-2" : ""
+      }`}
     >
+      {featured && (
+        <span className="glass absolute right-4 top-4 z-10 rounded-full px-3 py-1 font-mono text-[0.65rem] uppercase tracking-wide text-ink/80">
+          Featured
+        </span>
+      )}
+
       <div
         aria-hidden
-        className={`h-36 w-full bg-gradient-to-br ${gradient}`}
+        className={`w-full bg-gradient-to-br ${gradient} ${featured ? "h-48 lg:h-64" : "h-36"}`}
       />
       <div className="flex flex-1 flex-col gap-2 px-5 py-4">
-        <h3 className="font-serif text-xl text-ink">{project.title}</h3>
-        <p className="line-clamp-2 text-sm leading-relaxed text-ink/70">
+        <h3 className={`font-serif text-ink ${featured ? "text-2xl" : "text-xl"}`}>
+          {project.title}
+        </h3>
+        <p
+          className={`text-sm leading-relaxed text-ink/70 ${featured ? "" : "line-clamp-2"}`}
+        >
           {project.summary}
         </p>
+
+        {featured && project.metrics && project.metrics.length > 0 && (
+          <div className="mt-1 flex flex-wrap gap-1.5">
+            {project.metrics.map((metric) => (
+              <span
+                key={metric.label}
+                className="rounded-full bg-coral/15 px-2.5 py-1 font-mono text-[0.65rem] text-ink"
+              >
+                {metric.label}: {metric.value}
+              </span>
+            ))}
+          </div>
+        )}
+
         {stackPreview.length > 0 && (
           <div className="mt-1 flex flex-wrap gap-1.5">
             {stackPreview.map((tech) => (

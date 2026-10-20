@@ -72,19 +72,22 @@ generic in shape but not in specific claims.
 
 ## Known gotchas
 
-- **MapLibre worker:** `maplibre-gl`'s default worker-URL resolution
-  (relative to its own `import.meta.url`) doesn't survive Turbopack's chunk
-  naming — the map silently renders a blank canvas with only a console
-  `"Worker failed to load"` error, no thrown exception. Fixed by copying
-  `node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs` to
-  `public/vendor/maplibre-gl-worker.mjs` and calling `setWorkerUrl(...)`
-  before constructing the `Map` (see `components/travel/TravelMap.tsx`).
-  Re-copy that file if the `maplibre-gl` dependency version changes.
-- **r3f light intensities:** three.js r155+ defaults to physically-correct
-  (photometric) light units. Old-style intensities like `pointLight
+- **Travel is globe-only.** The MapLibre flat-map view was removed per a
+  later user request ("i dont want a map. just globe") — `maplibre-gl` is
+  no longer a dependency, `components/travel/TravelMap.tsx` no longer
+  exists, and `components/travel/Travel.tsx` renders `TravelGlobe`
+  directly (still lazy-loaded/no-SSR, still gated on a WebGL feature
+  check with a text fallback). Section 7 of `portfolio-plan.md` describes
+  a map+globe toggle — that's superseded, don't reintroduce it without
+  being asked.
+- **three.js physically-correct lighting:** r155+ defaults to
+  photometric light units. Old-style intensities like `pointLight
   intensity={1}` that looked fine pre-r155 now render as nearly black a
   few world units away — tune by eye against a real render, not against
-  pre-r155 example code (see `components/travel/TravelGlobe.tsx`).
+  pre-r155 example code. Relevant if touching the globe's custom
+  `THREE.MeshStandardMaterial` in `components/travel/TravelGlobe.tsx`
+  (built on `globe.gl`, not raw react-three-fiber — `@react-three/fiber`/
+  `@react-three/drei` were removed as part of that swap).
 - **Muted text opacity tiers:** `text-ink/40`, `/50`, `/60` all fail WCAG AA
   contrast (2.4:1, 3.2:1, 4.2:1) against `--color-base` — computed and
   confirmed via Lighthouse during the phase 8 QA pass. Use `/65` minimum

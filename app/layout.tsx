@@ -46,13 +46,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      // `snap-proximity` (not `snap-mandatory`): mandatory forces a hard
-      // full-viewport jump on *any* scroll input, however small — user
-      // feedback was "scrolls then autofits", i.e. normal free scrolling
-      // that only settles onto the nearest section edge near a boundary,
-      // not an abrupt jump on every wheel tick. Harmless on routes with no
+      // `snap-mandatory`: always resolves to a section boundary (never
+      // stuck between). Only feels right with Lenis off on this route
+      // (see SmoothScroll.tsx) -- Lenis's JS wheel smoothing fighting
+      // mandatory snap is what made an earlier version feel like an
+      // abrupt full jump on every tick. Harmless on routes with no
       // snap-start descendants (/blog, /blog/[slug]).
-      className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} h-full antialiased snap-y snap-proximity`}
+      className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} h-full antialiased snap-y snap-mandatory`}
     >
       <body className="min-h-full flex flex-col bg-base text-ink font-sans">
         <SmoothScroll />

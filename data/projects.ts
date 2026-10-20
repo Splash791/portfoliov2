@@ -15,6 +15,7 @@ export type Project = {
   architecture?: string;
   metrics?: { label: string; value: string }[];
   demoEmbed?: string; // reserved for later live demos (not v1)
+  featured?: boolean; // renders as the larger bento tile in the grid
 };
 
 export const projects: Project[] = [
@@ -45,10 +46,16 @@ export const projects: Project[] = [
   {
     slug: "farmos",
     title: "FarmOS",
+    // Real fact (user-provided, not a placeholder): FarmOS won the Gemini
+    // track at QuackHack. Everything else about this project is still
+    // generic placeholder, same as the rest of this file — no other
+    // specifics were given, so none are invented.
     summary:
-      "Project summary goes here, 2-3 sentences on the farm-management problem this project tackles and how it's built. Replace with the real write-up.",
+      "A farm-management dashboard — won the Gemini track at QuackHack. The rest of the write-up (problem detail, approach, stack) is still TODO.",
     stack: [],
     links: {},
+    metrics: [{ label: "QuackHack", value: "Gemini track winner" }],
+    featured: true,
   },
   {
     slug: "shell-in-c",
