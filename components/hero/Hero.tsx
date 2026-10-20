@@ -109,67 +109,87 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: durations.slow, ease: easing.out }}
-        className="glass relative z-10 flex max-w-3xl flex-col items-center gap-6 rounded-[2rem] px-6 py-10 text-center sm:px-12 sm:py-14"
+        className="glass relative z-10 flex w-full max-w-5xl flex-col items-center gap-10 rounded-[2rem] px-6 py-10 text-center sm:px-12 sm:py-14 lg:flex-row lg:items-center lg:gap-12 lg:text-left"
       >
-        <h1 className="font-serif text-5xl leading-[0.95] text-ink sm:text-7xl lg:text-8xl">
-          <motion.span
-            aria-hidden="true"
-            style={reducedMotion ? undefined : { rotateX, rotateY, transformPerspective: 600 }}
-            className="inline-block"
+        <div className="flex flex-col items-center gap-6 lg:items-start">
+          <h1 className="font-serif text-5xl leading-[0.95] text-ink sm:text-7xl lg:text-8xl">
+            <motion.span
+              aria-hidden="true"
+              style={reducedMotion ? undefined : { rotateX, rotateY, transformPerspective: 600 }}
+              className="inline-block"
+            >
+              {letters.map((char, i) =>
+                // A bare " " text node inside an `inline-block` span gets
+                // collapsed away by the browser (observed live: "Tyler
+                // Quach" rendered as "TylerQuach") -- a non-breaking space
+                // renders reliably in the same inline-block treatment.
+                reducedMotion ? (
+                  <span key={i}>{char === " " ? " " : char}</span>
+                ) : (
+                  <motion.span
+                    key={i}
+                    initial={{ opacity: 0, y: 24 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: durations.base, delay: 0.25 + i * letterStagger, ease: easing.out }}
+                    className="inline-block"
+                  >
+                    {char === " " ? " " : char}
+                  </motion.span>
+                ),
+              )}
+            </motion.span>
+            <span className="sr-only">{NAME}</span>
+          </h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: durations.base, delay: roleDelay, ease: easing.out }}
+            className="font-mono text-sm text-ink/70 sm:text-base"
           >
-            {letters.map((char, i) =>
-              reducedMotion ? (
-                <span key={i}>{char === " " ? " " : char}</span>
-              ) : (
-                <motion.span
-                  key={i}
-                  initial={{ opacity: 0, y: 24 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: durations.base, delay: 0.25 + i * letterStagger, ease: easing.out }}
-                  className="inline-block"
-                >
-                  {char === " " ? " " : char}
-                </motion.span>
-              ),
-            )}
-          </motion.span>
-          <span className="sr-only">{NAME}</span>
-        </h1>
+            {ROLE}
+          </motion.p>
 
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: durations.base, delay: roleDelay, ease: easing.out }}
-          className="font-mono text-sm text-ink/70 sm:text-base"
-        >
-          {ROLE}
-        </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: durations.base, delay: ctaDelay, ease: easing.out }}
+            className="mt-2 flex flex-wrap items-center justify-center gap-3 lg:justify-start"
+          >
+            <Magnetic>
+              <a
+                href="#projects"
+                className="rounded-full bg-ink px-6 py-3 font-mono text-sm text-[var(--color-paper)] transition-transform hover:scale-[1.03]"
+              >
+                View Projects
+              </a>
+            </Magnetic>
+            {/* TODO: no real LinkedIn URL was provided in the plan — replace href before launch. */}
+            <Magnetic>
+              <a
+                href="#"
+                data-placeholder="linkedin-url"
+                className="glass rounded-full px-6 py-3 font-mono text-sm text-ink transition-transform hover:scale-[1.03]"
+              >
+                Connect on LinkedIn
+              </a>
+            </Magnetic>
+          </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: durations.base, delay: ctaDelay, ease: easing.out }}
-          className="mt-2 flex flex-wrap items-center justify-center gap-3"
+        {/* TODO: no professional headshot available yet (section 11). */}
+        {/* `.glass`'s `border` shorthand would otherwise override a
+            `border-dashed` utility at equal specificity — set the dashed
+            style inline so it actually wins the cascade (same pattern as
+            About.tsx's photo placeholders). */}
+        <div
+          data-placeholder="headshot"
+          style={{ borderStyle: "dashed" }}
+          className="glass flex aspect-square w-48 shrink-0 flex-col items-center justify-center gap-2 rounded-[2rem] sm:w-56 lg:w-64"
         >
-          <Magnetic>
-            <a
-              href="#projects"
-              className="rounded-full bg-ink px-6 py-3 font-mono text-sm text-[var(--color-paper)] transition-transform hover:scale-[1.03]"
-            >
-              View Projects
-            </a>
-          </Magnetic>
-          {/* TODO: no real LinkedIn URL was provided in the plan — replace href before launch. */}
-          <Magnetic>
-            <a
-              href="#"
-              data-placeholder="linkedin-url"
-              className="glass rounded-full px-6 py-3 font-mono text-sm text-ink transition-transform hover:scale-[1.03]"
-            >
-              Connect on LinkedIn
-            </a>
-          </Magnetic>
-        </motion.div>
+          <span className="font-serif text-4xl text-ink/75">TQ</span>
+          <span className="font-mono text-[0.65rem] text-ink/65">Headshot placeholder</span>
+        </div>
       </motion.div>
     </section>
   );

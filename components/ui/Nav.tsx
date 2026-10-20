@@ -4,8 +4,6 @@ import { motion, useMotionValueEvent, useScroll } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
 import { durations, easing, useReducedMotionSafe } from "@/lib/motion";
-import SoundToggle, { useSoundEnabled } from "@/components/ui/SoundToggle";
-import { playTick } from "@/lib/sound";
 
 // Nav is rendered globally (root layout), but these sections only exist on
 // `/`. A bare `#about` is a same-page fragment link — from `/blog/[slug]` it
@@ -24,15 +22,8 @@ const LINKS = [
 export default function Nav() {
   const { scrollY, scrollYProgress } = useScroll();
   const reducedMotion = useReducedMotionSafe();
-  const soundEnabled = useSoundEnabled();
   const [hidden, setHidden] = useState(false);
   const [progress, setProgress] = useState(0);
-
-  // Sound is gated by both the user's toggle and reduced-motion (section 0,
-  // bullet 4: "...cursor effects and sound are disabled" under reduced motion).
-  function handleLinkHover() {
-    if (soundEnabled && !reducedMotion) playTick();
-  }
 
   useMotionValueEvent(scrollY, "change", (current) => {
     const previous = scrollY.getPrevious() ?? current;
@@ -78,7 +69,6 @@ export default function Nav() {
             <Link
               key={link.href}
               href={link.href}
-              onMouseEnter={handleLinkHover}
               className="shrink-0 whitespace-nowrap rounded-full px-3 py-1.5 font-mono text-xs text-ink/70 transition-colors hover:bg-white/40 hover:text-ink"
             >
               {link.label}
@@ -98,7 +88,6 @@ export default function Nav() {
           >
             in
           </a>
-          <SoundToggle />
         </div>
       </nav>
 

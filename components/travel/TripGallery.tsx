@@ -5,8 +5,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import type { Trip } from "@/data/trips";
 import { durations, easing } from "@/lib/motion";
-import { useSoundEnabled } from "@/components/ui/SoundToggle";
-import { playOpen, playClose, vibrate } from "@/lib/sound";
 
 const MODE_LABEL: Record<Trip["routes"][number]["mode"], string> = {
   flight: "Flight",
@@ -25,19 +23,8 @@ export default function TripGallery({
 }) {
   const panelRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
-  const soundEnabled = useSoundEnabled();
-
-  // Same open sound/haptic + reduced-motion gate as ProjectModal.
-  useEffect(() => {
-    if (!trip) return;
-    if (soundEnabled && !reducedMotion) playOpen();
-    if (soundEnabled) vibrate(10);
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- fire once per open, not on every reducedMotion/soundEnabled change
-  }, [trip]);
 
   function handleClose() {
-    if (soundEnabled && !reducedMotion) playClose();
-    if (soundEnabled) vibrate(10);
     onClose();
   }
   // Latest-callback ref so the keydown effect below stays keyed on just

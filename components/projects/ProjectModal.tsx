@@ -5,8 +5,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import type { Project } from "@/data/projects";
 import { durations, easing } from "@/lib/motion";
-import { useSoundEnabled } from "@/components/ui/SoundToggle";
-import { playOpen, playClose, vibrate } from "@/lib/sound";
 
 export default function ProjectModal({
   project,
@@ -19,27 +17,14 @@ export default function ProjectModal({
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
-  const soundEnabled = useSoundEnabled();
-
-  // Open sound/haptic fires once per project becoming non-null. Sound is
-  // gated by reduced-motion too (section 0, bullet 4); haptics isn't a
-  // visual motion effect so it only checks the sound/haptics toggle.
-  useEffect(() => {
-    if (!project) return;
-    if (soundEnabled && !reducedMotion) playOpen();
-    if (soundEnabled) vibrate(10);
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- fire once per open, not on every reducedMotion/soundEnabled change
-  }, [project]);
 
   function handleClose() {
-    if (soundEnabled && !reducedMotion) playClose();
-    if (soundEnabled) vibrate(10);
     onClose();
   }
   // Latest-callback ref so the keydown effect below can stay keyed on just
   // `project` (and not re-run — which would re-steal focus via the
-  // `closeButtonRef.current?.focus()` below — every time soundEnabled,
-  // reducedMotion, or onClose change identity).
+  // `closeButtonRef.current?.focus()` below — every time `onClose`
+  // changes identity).
   const handleCloseRef = useRef(handleClose);
   useEffect(() => {
     handleCloseRef.current = handleClose;

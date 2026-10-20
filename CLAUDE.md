@@ -49,9 +49,12 @@ there instead of inlining values, so the whole site moves on one rhythm.
   `page.emulateMediaFeatures`), not a hypothetical.
 - `app/globals.css` also forces near-zero animation/transition durations
   globally under `prefers-reduced-motion: reduce` as a CSS-level backstop.
-- Under reduced motion: parallax, kinetic text, blob animation, cursor
-  effects and sound must be disabled; simple fades remain. Verify this in
-  practice (e.g. OS-level setting or devtools emulation), not by assumption.
+- Under reduced motion: parallax, kinetic text, blob animation, and cursor
+  effects must be disabled; simple fades remain. Verify this in practice
+  (e.g. OS-level setting or devtools emulation), not by assumption.
+- There is no sound/haptics feature — it was built (Web Audio-synthesized
+  UI tones, a nav toggle, Vibration API haptics) and then removed per user
+  request. Don't reintroduce it without being asked.
 - Lenis smooth scroll is desktop-only; touch devices get native scroll.
 
 ## Placeholder / TODO rule
