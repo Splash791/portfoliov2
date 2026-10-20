@@ -109,7 +109,7 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: durations.slow, ease: easing.out }}
-        className="glass relative z-10 flex w-full max-w-6xl flex-col items-center gap-10 rounded-[2rem] px-6 py-10 text-center sm:px-12 sm:py-14 lg:flex-row lg:items-center lg:gap-12 lg:text-left"
+        className="glass relative z-10 flex w-full max-w-6xl flex-col items-center gap-10 rounded-[2rem] px-6 py-10 text-center sm:px-12 sm:py-14 lg:flex-row lg:items-center lg:justify-between lg:gap-12 lg:text-left"
       >
         <div className="flex flex-col items-center gap-6 lg:items-start">
           <h1 className="font-serif text-5xl leading-[0.95] text-ink sm:text-7xl lg:text-8xl">
