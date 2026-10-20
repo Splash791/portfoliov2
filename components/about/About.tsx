@@ -14,13 +14,6 @@ const LEAD =
 const DETAIL =
   "Most of what I build starts as a question I couldn't answer quickly — how a routing model picks an expert, how a map renders a route, how a shell parses a pipe. I'd rather read the source and rebuild a small version than take it on faith. That habit carries over to travel: I plan trips the way I plan projects, with a rough route and a lot of room to go off it.";
 
-const QUICK_FACTS = [
-  { label: "School", value: "CS @ Oregon State University" },
-  { label: "Targeting", value: "MLE / SWE roles" },
-  // TODO: no specific city/region was given in the plan — replace or remove.
-  { label: "Based in", value: "Location TBD", placeholder: true },
-];
-
 function LeadReveal({ text, reducedMotion }: { text: string; reducedMotion: boolean }) {
   const ref = useRef<HTMLParagraphElement>(null);
   const { scrollYProgress } = useScroll({
@@ -124,22 +117,6 @@ export default function About() {
               {DETAIL}
             </p>
           </motion.div>
-
-          <dl className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
-            {QUICK_FACTS.map((fact) => (
-              <div key={fact.label} className="glass rounded-2xl px-4 py-3">
-                <dt className="font-mono text-[0.65rem] uppercase tracking-wide text-ink/70">
-                  {fact.label}
-                </dt>
-                <dd
-                  data-placeholder={fact.placeholder ? "quick-fact" : undefined}
-                  className="mt-1 text-sm text-ink"
-                >
-                  {fact.value}
-                </dd>
-              </div>
-            ))}
-          </dl>
         </div>
 
         <div className="flex flex-col gap-4 sm:flex-row lg:flex-col">
