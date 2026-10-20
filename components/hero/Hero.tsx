@@ -109,7 +109,7 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: durations.slow, ease: easing.out }}
-        className="glass relative z-10 flex w-full max-w-5xl flex-col items-center gap-10 rounded-[2rem] px-6 py-10 text-center sm:px-12 sm:py-14 lg:flex-row lg:items-center lg:gap-12 lg:text-left"
+        className="glass relative z-10 flex w-full max-w-6xl flex-col items-center gap-10 rounded-[2rem] px-6 py-10 text-center sm:px-12 sm:py-14 lg:flex-row lg:items-center lg:gap-12 lg:text-left"
       >
         <div className="flex flex-col items-center gap-6 lg:items-start">
           <h1 className="font-serif text-5xl leading-[0.95] text-ink sm:text-7xl lg:text-8xl">
@@ -185,10 +185,10 @@ export default function Hero() {
         <div
           data-placeholder="headshot"
           style={{ borderStyle: "dashed" }}
-          className="glass flex aspect-square w-48 shrink-0 flex-col items-center justify-center gap-2 rounded-[2rem] sm:w-56 lg:w-64"
+          className="glass flex aspect-square w-64 shrink-0 flex-col items-center justify-center gap-3 rounded-[2rem] sm:w-80 lg:w-[26rem]"
         >
-          <span className="font-serif text-4xl text-ink/75">TQ</span>
-          <span className="font-mono text-[0.65rem] text-ink/65">Headshot placeholder</span>
+          <span className="font-serif text-6xl text-ink/75 lg:text-7xl">TQ</span>
+          <span className="font-mono text-xs text-ink/65 lg:text-sm">Headshot placeholder</span>
         </div>
       </motion.div>
     </section>
