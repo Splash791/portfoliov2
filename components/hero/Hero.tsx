@@ -1,0 +1,152 @@
+"use client";
+
+import { motion, useMotionValue, useTransform } from "framer-motion";
+import { useEffect } from "react";
+import { durations, easing, useReducedMotionSafe } from "@/lib/motion";
+import Magnetic from "@/components/ui/Magnetic";
+
+const NAME = "Tyler Quach";
+const ROLE = "CS @ Oregon State University";
+
+const BLOBS = [
+  { color: "bg-coral", className: "left-[-10%] top-[-15%] h-[55vmax] w-[55vmax]", duration: 26 },
+  { color: "bg-violet", className: "right-[-18%] top-[5%] h-[45vmax] w-[45vmax]", duration: 32 },
+  { color: "bg-amber", className: "left-[5%] bottom-[-25%] h-[42vmax] w-[42vmax]", duration: 22 },
+  { color: "bg-rose", className: "right-[0%] bottom-[-20%] h-[36vmax] w-[36vmax]", duration: 28 },
+  { color: "bg-peach", className: "left-[38%] top-[25%] h-[28vmax] w-[28vmax]", duration: 24 },
+];
+
+function Blobs({ reducedMotion }: { reducedMotion: boolean }) {
+  // Under reduced motion these render as static shapes (no `animate` loop at
+  // all) rather than an animated one paused mid-frame — this is the gate,
+  // not a duration tweak.
+  if (reducedMotion) {
+    return (
+      <div aria-hidden className="absolute inset-0 -z-10 overflow-hidden">
+        {BLOBS.map((blob, i) => (
+          <div
+            key={i}
+            className={`absolute rounded-full opacity-50 blur-[90px] ${blob.color} ${blob.className}`}
+          />
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div aria-hidden className="absolute inset-0 -z-10 overflow-hidden">
+      {BLOBS.map((blob, i) => (
+        <motion.div
+          key={i}
+          className={`absolute rounded-full opacity-50 blur-[90px] ${blob.color} ${blob.className}`}
+          animate={{
+            x: [0, 40, -24, 0],
+            y: [0, -32, 20, 0],
+            scale: [1, 1.08, 0.95, 1],
+          }}
+          transition={{ duration: blob.duration, repeat: Infinity, ease: "easeInOut" }}
+        />
+      ))}
+    </div>
+  );
+}
+
+export default function Hero() {
+  const reducedMotion = useReducedMotionSafe();
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const rotateX = useTransform(mouseY, [-0.5, 0.5], [3, -3]);
+  const rotateY = useTransform(mouseX, [-0.5, 0.5], [-3, 3]);
+
+  useEffect(() => {
+    // No listener is attached at all under reduced motion — the headline
+    // simply never receives pointer-driven values, it isn't just damped.
+    if (reducedMotion) return;
+    const handleMove = (event: MouseEvent) => {
+      mouseX.set(event.clientX / window.innerWidth - 0.5);
+      mouseY.set(event.clientY / window.innerHeight - 0.5);
+    };
+    window.addEventListener("mousemove", handleMove);
+    return () => window.removeEventListener("mousemove", handleMove);
+  }, [reducedMotion, mouseX, mouseY]);
+
+  const letters = NAME.split("");
+  const ctaDelay = reducedMotion ? 0 : 0.3 + letters.length * 0.03 + 0.35;
+  const roleDelay = reducedMotion ? 0 : 0.3 + letters.length * 0.03 + 0.1;
+
+  return (
+    <section
+      id="hero"
+      className="relative flex min-h-[90vh] w-full items-center justify-center overflow-hidden px-6 pt-28 pb-16 sm:pt-32"
+    >
+      <Blobs reducedMotion={!!reducedMotion} />
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: durations.slow, ease: easing.out }}
+        className="glass relative z-10 flex max-w-3xl flex-col items-center gap-6 rounded-[2rem] px-6 py-10 text-center sm:px-12 sm:py-14"
+      >
+        <h1 className="font-serif text-5xl leading-[0.95] text-ink sm:text-7xl lg:text-8xl">
+          <motion.span
+            aria-hidden="true"
+            style={reducedMotion ? undefined : { rotateX, rotateY, transformPerspective: 600 }}
+            className="inline-block"
+          >
+            {letters.map((char, i) =>
+              reducedMotion ? (
+                <span key={i}>{char === " " ? " " : char}</span>
+              ) : (
+                <motion.span
+                  key={i}
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: durations.base, delay: 0.3 + i * 0.03, ease: easing.out }}
+                  className="inline-block"
+                >
+                  {char === " " ? " " : char}
+                </motion.span>
+              ),
+            )}
+          </motion.span>
+          <span className="sr-only">{NAME}</span>
+        </h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: durations.base, delay: roleDelay, ease: easing.out }}
+          className="font-mono text-sm text-ink/70 sm:text-base"
+        >
+          {ROLE}
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: durations.base, delay: ctaDelay, ease: easing.out }}
+          className="mt-2 flex flex-wrap items-center justify-center gap-3"
+        >
+          <Magnetic>
+            <a
+              href="#projects"
+              className="rounded-full bg-ink px-6 py-3 font-mono text-sm text-[var(--color-base)] transition-transform hover:scale-[1.03]"
+            >
+              View Projects
+            </a>
+          </Magnetic>
+          {/* TODO: no real LinkedIn URL was provided in the plan — replace href before launch. */}
+          <Magnetic>
+            <a
+              href="#"
+              data-placeholder="linkedin-url"
+              className="glass rounded-full px-6 py-3 font-mono text-sm text-ink transition-transform hover:scale-[1.03]"
+            >
+              Connect on LinkedIn
+            </a>
+          </Magnetic>
+        </motion.div>
+      </motion.div>
+    </section>
+  );
+}

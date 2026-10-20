@@ -1,0 +1,85 @@
+---
+title: "Building the travel map: a globe, a flat map, and a WebGL fallback"
+date: "TODO-2026-XX-XX"
+tags: ["travel + tech"]
+summary: "How the Travel section's 3D globe and MapLibre flat map are wired together — lazy-loading, WebGL feature detection, and animated route arcs that respect reduced motion."
+---
+
+The Travel section needed to do three things at once: look good, stay light
+on a phone, and not break for anyone without WebGL. Here's how that shook
+out in the actual implementation.
+
+## Flat map first, globe as an upgrade
+
+The default view is a MapLibre GL flat map, not the 3D globe. That's the
+deliberate "lighter option" — react-three-fiber is powerful but it's also
+a bigger, heavier dependency to force on every visitor. The globe is an
+opt-in toggle next to the map, and that toggle is hidden outright when
+WebGL isn't available, so there's no dead button that leads to a blank
+canvas.
+
+WebGL support gets checked once, on mount, by trying to create a
+`webgl`/`experimental-webgl` context on a throwaway canvas. Since that
+capability can't change mid-session, the check is wired through
+`useSyncExternalStore` with a no-op `subscribe` — it's a snapshot, not
+something that needs to re-run on every render.
+
+## Loading the heavy stuff only when it's needed
+
+Both the globe and the map components are dynamically imported with
+`ssr: false`. They have to be — react-three-fiber touches `canvas`/WebGL
+at module-load time, and `maplibre-gl` does the same, so neither can run
+on the server at all.
+
+On top of that, neither chunk loads just because the page loaded. The
+Travel section watches its own scroll position with Framer Motion's
+`useInView`, using a `200px` margin so the fetch kicks off *before* the
+section is fully on screen, not after. Scroll past it fast and you still
+get a loading state instead of a layout jump; scroll normally and the map
+is basically ready by the time you arrive.
+
+## The globe itself
+
+The globe is a low-poly sphere — 32 segments, not a photoreal Earth
+texture, since no real-world texture asset existed to pull in and a flat
+ink-colored sphere fits the rest of the site's abstract glass-and-gradient
+language better anyway. Pixel ratio is capped at `[1, 1.5]` on the
+`Canvas` so it doesn't quietly tank frame rate on a high-DPI phone.
+
+Trip stops are small emissive spheres positioned with a standard
+lat/lng-to-3D conversion. Routes between stops aren't straight chords —
+each one is a quadratic Bézier arc pushed outward from the sphere's
+surface, sampled into 32 points, so it reads as a "flight path" rather
+than a line drilled through the globe.
+
+## Drawing the arcs in — and not, when that matters
+
+The arcs animate by revealing more of their sampled points every frame,
+roughly 1.5 seconds to go from a stub to the full curve. That's a `useFrame`
+loop advancing a progress ref by `delta * 0.6` each tick. Under reduced
+motion, that loop simply doesn't run — the arc is handed its full point
+array immediately instead of growing into it. Same idea on the flat map:
+the route line layer's `line-opacity` animates from 0 to ~0.85 over a few
+hundred milliseconds via `requestAnimationFrame`, or just gets painted at
+full opacity right away if the visitor has reduced motion turned on. The
+globe's slow auto-rotation gets the same treatment — it's skipped entirely,
+not just slowed down, since "slow but still spinning" isn't actually
+reduced motion.
+
+## Why MapLibre and not something that needs a key
+
+The flat map currently points at MapLibre's own public demo tile style, so
+there's no API key wiring required to get something on screen. It's
+nudged toward the site's warm, slightly desaturated palette with a CSS
+filter on the map container. It's a placeholder, flagged in the code — a
+real custom light basemap needs a tile provider and a key, which wasn't
+something this pass had.
+
+## Opening a trip
+
+Clicking a pin — on either the globe or the map — calls the same
+`onSelectTrip` callback, which opens a gallery panel. That panel reuses
+the exact focus-trap / Escape / click-outside-to-close pattern already
+built for the project modals, rather than inventing a second one. Two
+different map renderers, one shared interaction model for what happens
+after you click a pin.
