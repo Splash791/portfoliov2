@@ -4,7 +4,6 @@ import Experience from "@/components/experience/Experience";
 import Projects from "@/components/projects/Projects";
 import Travel from "@/components/travel/Travel";
 import Writing from "@/components/writing/Writing";
-import Connect from "@/components/connect/Connect";
 import Footer from "@/components/ui/Footer";
 import { getAllPosts } from "@/lib/blog";
 
@@ -24,8 +23,6 @@ export default function Home() {
       <Travel />
 
       <Writing posts={posts} />
-
-      <Connect />
 
       <Footer />
     </main>

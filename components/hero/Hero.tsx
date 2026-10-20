@@ -82,6 +82,17 @@ export default function Hero() {
       <Blobs reducedMotion={!!reducedMotion} />
 
       <motion.div
+        // `reducedMotion` is hydration-safe (always `false` on the very
+        // first render to match SSR) and can correct to its real value a
+        // moment after mount. The headline/role/CTA delays below are
+        // computed from that value, so if it corrects while this entrance
+        // animation is already mid-flight, Framer receives a changed
+        // `transition.delay` on a live animation instead of a fresh one —
+        // keying on the resolved value forces a clean remount-and-restart
+        // instead of mutating transition props under an in-progress
+        // animation (reported: role line visible but stuck near-invisible
+        // while CTAs below it had already finished).
+        key={reducedMotion ? "reduced" : "motion"}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: durations.slow, ease: easing.out }}

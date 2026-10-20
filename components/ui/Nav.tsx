@@ -19,7 +19,6 @@ const LINKS = [
   { href: "/#projects", label: "Projects" },
   { href: "/#travel", label: "Travel" },
   { href: "/#writing", label: "Writing" },
-  { href: "/#connect", label: "Connect" },
 ];
 
 export default function Nav() {
@@ -61,7 +60,7 @@ export default function Nav() {
           ? { duration: 0 }
           : { duration: durations.base, ease: easing.out }
       }
-      className="fixed inset-x-0 top-4 z-50 flex justify-center px-4"
+      className="fixed inset-x-0 top-4 z-50 flex justify-start px-4"
     >
       <nav
         aria-label="Primary"
