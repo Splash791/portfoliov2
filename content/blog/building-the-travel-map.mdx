@@ -1,85 +1,88 @@
 ---
-title: "Building the travel map: a globe, a flat map, and a WebGL fallback"
+title: "Building the travel globe: globe.gl, lighting gotchas, and a pin-visibility bug"
 date: "TODO-2026-XX-XX"
 tags: ["travel + tech"]
-summary: "How the Travel section's 3D globe and MapLibre flat map are wired together — lazy-loading, WebGL feature detection, and animated route arcs that respect reduced motion."
+summary: "The Travel section is a globe.gl globe, lazy-loaded and WebGL-gated — what it took to get pins visible on load, lighting actually visible, and reduced motion handled properly."
 ---
 
-The Travel section needed to do three things at once: look good, stay light
-on a phone, and not break for anyone without WebGL. Here's how that shook
-out in the actual implementation.
+The Travel section went through two real implementations before landing
+where it is now: a hand-rolled react-three-fiber globe with an optional
+MapLibre flat-map view, then a rewrite onto the [globe.gl](https://github.com/vasturiano/globe.gl)
+library with the map view dropped entirely. Here's the current shape, and
+the bugs that shaped it.
 
-## Flat map first, globe as an upgrade
+## Why globe.gl, and why globe-only
 
-The default view is a MapLibre GL flat map, not the 3D globe. That's the
-deliberate "lighter option" — react-three-fiber is powerful but it's also
-a bigger, heavier dependency to force on every visitor. The globe is an
-opt-in toggle next to the map, and that toggle is hidden outright when
-WebGL isn't available, so there's no dead button that leads to a blank
-canvas.
+globe.gl is purpose-built for exactly this — points, arcs, and a globe,
+with a declarative-ish chained API over a managed three.js scene. It
+replaced a hand-rolled react-three-fiber setup that was duplicating a lot
+of what the library already does well: lat/lng-to-3D projection, arc
+geometry, click handling on 3D points. The flat MapLibre map that used to
+sit alongside it as the default view was removed outright — one
+visualization, not two maintained in parallel.
 
-WebGL support gets checked once, on mount, by trying to create a
-`webgl`/`experimental-webgl` context on a throwaway canvas. Since that
-capability can't change mid-session, the check is wired through
-`useSyncExternalStore` with a no-op `subscribe` — it's a snapshot, not
-something that needs to re-run on every render.
+The globe is still lazy — dynamically imported with `ssr: false` (it
+touches `canvas`/WebGL at module-load time, so it can't run server-side
+at all) and only mounted once the Travel section nears the viewport via
+Framer Motion's `useInView` with a `200px` margin, so the chunk starts
+loading before the section is fully on screen rather than after.
 
-## Loading the heavy stuff only when it's needed
+## WebGL still has a fallback
 
-Both the globe and the map components are dynamically imported with
-`ssr: false`. They have to be — react-three-fiber touches `canvas`/WebGL
-at module-load time, and `maplibre-gl` does the same, so neither can run
-on the server at all.
+The WebGL capability check didn't go away just because the map did.
+It's still a one-time `useSyncExternalStore` snapshot (try creating a
+`webgl`/`experimental-webgl` context on a throwaway canvas; the result
+can't change mid-session so there's no reason to re-check it) — if it
+comes back false, the section renders a plain text fallback instead of
+a broken canvas.
 
-On top of that, neither chunk loads just because the page loaded. The
-Travel section watches its own scroll position with Framer Motion's
-`useInView`, using a `200px` margin so the fetch kicks off *before* the
-section is fully on screen, not after. Scroll past it fast and you still
-get a loading state instead of a layout jump; scroll normally and the map
-is basically ready by the time you arrive.
+## The globe went solid black, and it wasn't a bug in the usual sense
 
-## The globe itself
+The globe's surface is a custom `THREE.MeshStandardMaterial` in the
+site's ink color — no real-earth texture, since none existed to pull in
+and a flat stylized sphere fits the rest of the glass-and-gradient
+language better anyway. First render: a plain black circle, no visible
+roundness, no pins.
 
-The globe is a low-poly sphere — 32 segments, not a photoreal Earth
-texture, since no real-world texture asset existed to pull in and a flat
-ink-colored sphere fits the rest of the site's abstract glass-and-gradient
-language better anyway. Pixel ratio is capped at `[1, 1.5]` on the
-`Canvas` so it doesn't quietly tank frame rate on a high-DPI phone.
+The cause was three.js itself. Versions from r155 onward default to
+physically-correct (photometric) light units, where old-style intensities
+that used to read as "a normal fill light" — `intensity={1}` on a point
+light a few units away — now render as functionally unlit. The fix was
+blunt: raise the ambient and point-light intensities until the sphere
+actually showed a visible lighting gradient against a real render, not
+against pre-r155 example code.
 
-Trip stops are small emissive spheres positioned with a standard
-lat/lng-to-3D conversion. Routes between stops aren't straight chords —
-each one is a quadratic Bézier arc pushed outward from the sphere's
-surface, sampled into 32 points, so it reads as a "flight path" rather
-than a line drilled through the globe.
+## Pins you can't see are pins that don't exist
 
-## Drawing the arcs in — and not, when that matters
+Separately: on load, the globe showed zero pins. Not a rendering bug —
+geometry and math. Three of the four trip stops (Tokyo, Canberra, Hanoi)
+sit in the Eastern hemisphere, and with this camera setup a stop's
+longitude alone decides whether it's front- or back-facing by default.
+Most of the data was clustered on the far side of the sphere from the
+starting camera angle, so a visitor landed on a bare globe and had to
+manually orbit it to discover there was anything there at all.
 
-The arcs animate by revealing more of their sampled points every frame,
-roughly 1.5 seconds to go from a stub to the full curve. That's a `useFrame`
-loop advancing a progress ref by `delta * 0.6` each tick. Under reduced
-motion, that loop simply doesn't run — the arc is handed its full point
-array immediately instead of growing into it. Same idea on the flat map:
-the route line layer's `line-opacity` animates from 0 to ~0.85 over a few
-hundred milliseconds via `requestAnimationFrame`, or just gets painted at
-full opacity right away if the visitor has reduced motion turned on. The
-globe's slow auto-rotation gets the same treatment — it's skipped entirely,
-not just slowed down, since "slow but still spinning" isn't actually
-reduced motion.
+The fix: set an explicit starting point of view (`globe.pointOfView({
+lat: 10, lng: 120, altitude: 2.2 }, 0)` — `0` transition ms, so it's
+immediate, not animated) that frames the cluster on load instead of
+leaving it to chance.
 
-## Why MapLibre and not something that needs a key
+## Reduced motion, done per-feature rather than as one switch
 
-The flat map currently points at MapLibre's own public demo tile style, so
-there's no API key wiring required to get something on screen. It's
-nudged toward the site's warm, slightly desaturated palette with a CSS
-filter on the map container. It's a placeholder, flagged in the code — a
-real custom light basemap needs a tile provider and a key, which wasn't
-something this pass had.
+The globe has three independent things that move, and reduced motion
+gates each one separately rather than toggling the whole scene on or
+off: continuous auto-rotation (`controls.autoRotate`) is skipped
+entirely when reduced motion is on, not just slowed down; route arcs
+switch from a continuously flowing dash animation
+(`arcDashAnimateTime`) to fully-formed static lines
+(`arcDashLength(1)`, `arcDashGap(0)`); user-driven orbit and zoom stay
+enabled either way, since manually dragging the globe isn't the kind of
+motion reduced-motion settings are about.
 
 ## Opening a trip
 
-Clicking a pin — on either the globe or the map — calls the same
-`onSelectTrip` callback, which opens a gallery panel. That panel reuses
-the exact focus-trap / Escape / click-outside-to-close pattern already
-built for the project modals, rather than inventing a second one. Two
-different map renderers, one shared interaction model for what happens
-after you click a pin.
+Clicking a pin calls the same `onSelectTrip` callback regardless of
+which pin it is, which opens a gallery panel reusing the exact
+focus-trap / Escape / click-outside-to-close pattern already built for
+the project modals — one shared interaction model, not a second one
+invented for the globe.
