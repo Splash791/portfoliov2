@@ -96,7 +96,12 @@ export default function TravelMap({
         const start = performance.now();
         const durationMs = durations.slow * 2000;
         const step = (now: number) => {
-          const t = Math.min(1, (now - start) / durationMs);
+          // Clamp both ends: the first requestAnimationFrame callback's
+          // timestamp can precede the `performance.now()` captured a moment
+          // earlier (observed live — produced a small negative `t`), and
+          // MapLibre's setPaintProperty throws on a negative line-opacity
+          // rather than silently clamping it.
+          const t = Math.max(0, Math.min(1, (now - start) / durationMs));
           map.setPaintProperty("routes-line", "line-opacity", t * 0.85);
           if (t < 1) requestAnimationFrame(step);
         };
