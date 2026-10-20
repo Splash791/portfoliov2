@@ -18,7 +18,7 @@ const LINKS = [
   { href: "/#experience", label: "Experience" },
   { href: "/#projects", label: "Projects" },
   { href: "/#travel", label: "Travel" },
-  { href: "/#writing", label: "Writing" },
+  { href: "/#writing", label: "Blog" },
 ];
 
 export default function Nav() {

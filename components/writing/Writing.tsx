@@ -19,7 +19,7 @@ export default function Writing({ posts }: { posts: PostMeta[] }) {
       <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="font-mono text-xs uppercase tracking-wide text-ink/70">
-            Writing
+            Blog
           </p>
           <h2 className="mt-2 font-serif text-3xl text-ink sm:text-4xl">
             Notes on what I&apos;m building and learning

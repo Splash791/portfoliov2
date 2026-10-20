@@ -3,7 +3,7 @@ import Link from "next/link";
 import { getAllPosts } from "@/lib/blog";
 
 export const metadata: Metadata = {
-  title: "Writing — Tyler Quach",
+  title: "Blog — Tyler Quach",
   description:
     "Notes on projects, ML research, internship lessons, and travel + tech.",
 };
@@ -14,7 +14,7 @@ export default function BlogIndexPage() {
   return (
     <main className="mx-auto w-full max-w-3xl px-6 py-24 sm:py-32">
       <p className="font-mono text-xs uppercase tracking-wide text-ink/70">
-        Writing
+        Blog
       </p>
       <h1 className="mt-2 font-serif text-4xl text-ink sm:text-5xl">
         All posts
