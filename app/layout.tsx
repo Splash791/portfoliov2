@@ -46,7 +46,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} h-full antialiased`}
+      // `snap-proximity` (not `snap-mandatory`): mandatory forces a hard
+      // full-viewport jump on *any* scroll input, however small — user
+      // feedback was "scrolls then autofits", i.e. normal free scrolling
+      // that only settles onto the nearest section edge near a boundary,
+      // not an abrupt jump on every wheel tick. Harmless on routes with no
+      // snap-start descendants (/blog, /blog/[slug]).
+      className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} h-full antialiased snap-y snap-proximity`}
     >
       <body className="min-h-full flex flex-col bg-base text-ink font-sans">
         <SmoothScroll />
