@@ -54,7 +54,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       // snap-start descendants (/blog, /blog/[slug]).
       className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} h-full antialiased snap-y snap-mandatory`}
     >
-      <body className="min-h-full flex flex-col bg-base text-ink font-sans">
+      <body className="min-h-full flex flex-col bg-paper text-ink font-sans">
         <SmoothScroll />
         <Cursor />
         <Nav />

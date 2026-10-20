@@ -203,7 +203,7 @@ export default function ProjectModal({
                     href={project.links.github}
                     target="_blank"
                     rel="noreferrer"
-                    className="rounded-full bg-ink px-5 py-2.5 font-mono text-xs text-[var(--color-base)]"
+                    className="rounded-full bg-ink px-5 py-2.5 font-mono text-xs text-[var(--color-paper)]"
                   >
                     GitHub
                   </a>

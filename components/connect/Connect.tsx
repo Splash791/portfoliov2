@@ -38,7 +38,7 @@ export default function Connect() {
             <a
               href="#"
               data-placeholder="linkedin-url"
-              className="rounded-full bg-ink px-6 py-3 font-mono text-sm text-[var(--color-base)] transition-transform hover:scale-[1.03]"
+              className="rounded-full bg-ink px-6 py-3 font-mono text-sm text-[var(--color-paper)] transition-transform hover:scale-[1.03]"
             >
               LinkedIn
             </a>

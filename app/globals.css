@@ -11,9 +11,20 @@
   --font-mono: var(--font-mono);
   --font-serif: var(--font-serif);
 
-  /* Off-white base — never pure white. */
-  --color-base: #f7f5f0;
-  /* Cool ink accent for text/contrast. ~14.7:1 contrast on --color-base (WCAG AAA). */
+  /* Off-white base — never pure white.
+     Named "paper", not "base": Tailwind v4's own font-size scale has a
+     step literally called "base" (text-xs/sm/base/lg/...), and a custom
+     color token named "base" generates a colliding `text-base` utility
+     that resolves as a *color* rule instead of the font-size one —
+     `sm:text-base` silently set `color: var(--color-base)` and clobbered
+     the correct `text-ink/NN` color wherever both classes landed on the
+     same element. Found live: a paragraph using `text-ink/70 sm:text-base`
+     rendered with text the exact color of its own background above the
+     `sm:` breakpoint, with getComputedStyle reporting `color: rgb(247,
+     245, 240)` -- this variable's own value -- despite the opacity
+     modifier class being present and otherwise correct below `sm:`. */
+  --color-paper: #f7f5f0;
+  /* Cool ink accent for text/contrast. ~14.7:1 contrast on --color-paper (WCAG AAA). */
   --color-ink: #1e1b4b;
 
   /* Warm palette — blurred mesh blobs + small highlights. TODO: review hex values. */
@@ -30,7 +41,7 @@
 }
 
 body {
-  background: var(--color-base);
+  background: var(--color-paper);
   color: var(--color-ink);
 }
 

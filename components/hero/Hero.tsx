@@ -8,11 +8,16 @@ import Magnetic from "@/components/ui/Magnetic";
 const NAME = "Tyler Quach";
 const ROLE = "CS @ Oregon State University";
 
+// Warm sunset + white only -- user feedback was the violet/rose mix read
+// as "floral" rather than sunset. Coral/amber/peach are the warm palette's
+// own sunset-adjacent tones; white is Tailwind's own (not a custom warm-
+// palette token, since the palette has no white/light entry) for a bright
+// haze rather than another saturated hue.
 const BLOBS = [
   { color: "bg-coral", className: "left-[-10%] top-[-15%] h-[55vmax] w-[55vmax]", duration: 26 },
-  { color: "bg-violet", className: "right-[-18%] top-[5%] h-[45vmax] w-[45vmax]", duration: 32 },
+  { color: "bg-white", className: "right-[-18%] top-[5%] h-[45vmax] w-[45vmax]", duration: 32 },
   { color: "bg-amber", className: "left-[5%] bottom-[-25%] h-[42vmax] w-[42vmax]", duration: 22 },
-  { color: "bg-rose", className: "right-[0%] bottom-[-20%] h-[36vmax] w-[36vmax]", duration: 28 },
+  { color: "bg-coral", className: "right-[0%] bottom-[-20%] h-[36vmax] w-[36vmax]", duration: 28 },
   { color: "bg-peach", className: "left-[38%] top-[25%] h-[28vmax] w-[28vmax]", duration: 24 },
 ];
 
@@ -71,8 +76,16 @@ export default function Hero() {
   }, [reducedMotion, mouseX, mouseY]);
 
   const letters = NAME.split("");
-  const ctaDelay = reducedMotion ? 0 : 0.3 + letters.length * 0.03 + 0.35;
-  const roleDelay = reducedMotion ? 0 : 0.3 + letters.length * 0.03 + 0.1;
+  // Shorter, flatter choreography than before: the per-letter stagger and
+  // the role/CTA offsets used to chain up to ~1.3s of total delay (0.3s +
+  // 11 letters * 0.03s + up to 0.35s), which left a long window where a
+  // loaded machine/browser could visibly stall mid-fade (observed live —
+  // the role line stuck at low opacity while later-in-the-chain CTAs had
+  // already finished). Less total chained delay means less time for
+  // real-world scheduling jitter to land mid-transition.
+  const letterStagger = 0.018;
+  const ctaDelay = reducedMotion ? 0 : 0.25 + letters.length * letterStagger + 0.2;
+  const roleDelay = reducedMotion ? 0 : 0.25 + letters.length * letterStagger + 0.05;
 
   return (
     <section
@@ -112,7 +125,7 @@ export default function Hero() {
                   key={i}
                   initial={{ opacity: 0, y: 24 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: durations.base, delay: 0.3 + i * 0.03, ease: easing.out }}
+                  transition={{ duration: durations.base, delay: 0.25 + i * letterStagger, ease: easing.out }}
                   className="inline-block"
                 >
                   {char === " " ? " " : char}
@@ -141,7 +154,7 @@ export default function Hero() {
           <Magnetic>
             <a
               href="#projects"
-              className="rounded-full bg-ink px-6 py-3 font-mono text-sm text-[var(--color-base)] transition-transform hover:scale-[1.03]"
+              className="rounded-full bg-ink px-6 py-3 font-mono text-sm text-[var(--color-paper)] transition-transform hover:scale-[1.03]"
             >
               View Projects
             </a>
