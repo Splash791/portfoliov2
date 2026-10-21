@@ -15,64 +15,65 @@ export type Experience = {
 
 export const experience: Experience[] = [
   {
-    org: "Deloitte",
-    role: "Software Engineer Intern",
-    start: "20XX",
-    end: "20XX",
-    featured: true,
-    summary:
-      "Project summary goes here, 2-3 sentences on the problem, the stack, and what shipped by the end of the internship.",
-    details: [
-      "TODO: name the specific team/practice and the concrete problem worked on.",
-      "TODO: call out the stack and one engineering decision worth highlighting.",
-      "TODO: outcome or impact, stated plainly — no invented metrics.",
-    ],
-  },
-  {
     org: "Oregon State University",
     role: "ML Research Assistant",
-    start: "20XX",
+    start: "December 2025 - Present",
     featured: false,
     summary:
-      "Research assistant work on model composition — combining neural networks with symbolic constraints and exploring MoE-style routing between experts.",
+      "Developing Automated Data Systems for ML.",
     details: [
-      "Core thread: model composition with neural-symbolic constraints and mixture-of-experts-style routing, as described in the plan.",
-      "TODO: methods, datasets, and current results — not specified yet, placeholder only.",
-      "TODO: advisor/lab name if it should be credited here.",
+      "- Engineered bash-based data validation and automation pipelines to test model training across multiple real-world datasets under varying missing-data conditions, ensuring consistent, reproducible results on HPC infrastructure.",
+      "- Conducted literature review and stress-tested research hypotheses for a novel data-repair framework, benchmarking its assumptions against existing imputation methods to help refine the project’s core contributions.",
     ],
   },
   {
     org: "Oregon State University",
-    role: "Teaching Assistant / Undergraduate Learning Assistant",
-    start: "20XX",
+    role: "Undergraduate Learning Assistant",
+    start: "December 2025 - Present",
     featured: false,
     summary:
-      "TA/ULA role supporting a CS course — holding office hours, grading, and helping students work through core concepts.",
+      "CS162 : Intro to Computer Science II",
     details: [
-      "TODO: which course(s) and term(s) — not specified yet, placeholder only.",
+      "- Held office hours to debug code, review concepts for exams, and guide students toward problem-solving assignments.",
+      "- Led weekly recitation sessions for 30+ students, reinforcing concepts including object-oriented programming.",
     ],
   },
   {
-    org: "AWS",
-    role: "Campus Ambassador",
-    start: "20XX",
-    featured: false,
+    org: "Deloitte",
+    role: "Software Engineer Intern",
+    start: "June 2026",
+    end: "August 2026",
+    featured: true,
     summary:
-      "Campus Ambassador role representing AWS on campus — workshops, events, and community building around cloud/ML tooling.",
+      "Goverment and Public Services",
     details: [
-      "TODO: specific events/workshops run and rough turnout — not specified yet, placeholder only.",
+      "- Developed a client dashboard for metadata intake across dozens of fields, feeding a daily sync pipeline pushing owner-validated records into Collibra to support the data governance program, cutting manual processing time by ˜35%.",
+      "- Built a RAID log and dashboard to track risks, assumptions, issues, and dependencies, surfacing blockers early and keeping the team, client, and senior leadership aligned on project status throughout the engagement.",
     ],
   },
   {
-    // TODO: placeholder entry — the plan references "other leadership roles"
-    // without naming a specific organization. Replace org/role/summary with
-    // the real one(s) before launch; do not invent a club/org name.
-    org: "Leadership Role (TBD)",
-    role: "Leadership Role (TBD)",
-    start: "20XX",
+    org: "Coordinator",
+    role: "Mobile Development Intern",
+    start: "January 2026 - April 2026",
     featured: false,
     summary:
-      "Placeholder for an additional leadership role mentioned in the plan but not yet named. Swap in the real organization, role, and summary.",
-    details: ["TODO: replace this entire entry with the real organization and role."],
+      "Startup within the NVIDIA Inception Program.",
+    details: [
+      "Integrated and managed backend connectivity with Better Auth and TanStack Query, implementing secure authentication flows, efficient API communication, and reliable client-side data caching tailored for mobile architecture.",
+      "Headed the migration of an existing web application to a cross-platform mobile app using React Native and Expo, ensuring functionality and performance across iOS and Android while maintaining feature parity with the web product.",
+
+    ],
   },
+  // {
+  //   // // TODO: placeholder entry — the plan references "other leadership roles"
+  //   // // without naming a specific organization. Replace org/role/summary with
+  //   // // the real one(s) before launch; do not invent a club/org name.
+  //   // org: "Leadership Role (TBD)",
+  //   // role: "Leadership Role (TBD)",
+  //   // start: "20XX",
+  //   // featured: false,
+  //   // summary:
+  //   //   "Placeholder for an additional leadership role mentioned in the plan but not yet named. Swap in the real organization, role, and summary.",
+  //   // details: ["TODO: replace this entire entry with the real organization and role."],
+  // },
 ];

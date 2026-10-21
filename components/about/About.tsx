@@ -3,6 +3,8 @@
 import { useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { durations, easing, useReducedMotionSafe } from "@/lib/motion";
+import { aboutPhotos } from "@/data/about-photos";
+import PhotoCarousel from "@/components/about/PhotoCarousel";
 
 // TODO(section 12): bio copy is an open item — write a first-person draft
 // together, or swap in the user's own. Voice is locked: curious builder +
@@ -132,14 +134,7 @@ export default function About() {
             <span className="font-serif text-4xl text-ink/75">TQ</span>
             <span className="font-mono text-[0.65rem] text-ink/65">Headshot placeholder</span>
           </div>
-          {/* TODO: no casual/personal photo available yet (section 11). */}
-          <div
-            data-placeholder="casual-photo"
-            style={{ borderStyle: "dashed" }}
-            className="glass flex aspect-[4/3] flex-1 flex-col items-center justify-center gap-2 rounded-[2rem] sm:aspect-square"
-          >
-            <span className="font-mono text-[0.65rem] text-ink/65">Casual photo placeholder</span>
-          </div>
+          <PhotoCarousel photos={aboutPhotos} reducedMotion={!!reducedMotion} />
         </div>
       </div>
     </section>

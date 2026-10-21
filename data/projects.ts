@@ -2,6 +2,11 @@
 // section 0's template style — no specific facts, tech stacks, metrics, or
 // URLs are invented. `stack`/`links`/cover/video/screenshots/architecture/
 // metrics are left empty or undefined until real assets exist (section 11).
+//
+// To add a project image: drop the file in public/images/projects/ and set
+// `cover: "/images/projects/<filename>"` on that project below — ProjectCard
+// renders it automatically (no code changes needed). Projects without a
+// `cover` keep the generated-gradient fallback so the grid stays uniform.
 
 export type Project = {
   slug: string;
@@ -36,14 +41,6 @@ export const projects: Project[] = [
     links: {},
   },
   {
-    slug: "gate-tracker",
-    title: "Gate Tracker",
-    summary:
-      "Project summary goes here, 2-3 sentences on what this tracking tool follows and the approach behind it. Replace with the real write-up.",
-    stack: [],
-    links: {},
-  },
-  {
     slug: "farmos",
     title: "FarmOS",
     // Real fact (user-provided, not a placeholder): FarmOS won the Gemini
@@ -56,22 +53,6 @@ export const projects: Project[] = [
     links: {},
     metrics: [{ label: "QuackHack", value: "Gemini track winner" }],
     featured: true,
-  },
-  {
-    slug: "shell-in-c",
-    title: "Shell in C",
-    summary:
-      "Project summary goes here, 2-3 sentences on which shell features (parsing, piping, job control, built-ins) were implemented and why. Replace with the real write-up.",
-    stack: ["C"],
-    links: {},
-  },
-  {
-    slug: "nba-player-efficiency-index",
-    title: "NBA Player Efficiency Index",
-    summary:
-      "Project summary goes here, 2-3 sentences on the efficiency metric computed and the data/approach behind it. Replace with the real write-up.",
-    stack: [],
-    links: {},
   },
   {
     slug: "ocr-expense-tracker",

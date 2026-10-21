@@ -90,7 +90,7 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative flex min-h-[90vh] w-full items-center justify-center overflow-hidden px-6 pt-28 pb-16 sm:pt-32"
+      className="relative flex min-h-[90vh] w-full items-center justify-center overflow-hidden px-6 py-16"
     >
       <Blobs reducedMotion={!!reducedMotion} />
 

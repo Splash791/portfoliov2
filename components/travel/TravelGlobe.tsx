@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import Globe, { type GlobeInstance } from "globe.gl";
-import * as THREE from "three";
 import type { Trip } from "@/data/trips";
 
 // Default export only (dynamically imported with { ssr: false } from
@@ -66,12 +65,15 @@ export default function TravelGlobe({
 
     globe
       .backgroundColor("rgba(0,0,0,0)")
-      // No real-earth texture is available or being fetched (section 11) --
-      // a solid stylized material in the existing ink token, matching the
-      // previous abstract-sphere look, not a default textured earth.
-      .globeMaterial(
-        new THREE.MeshStandardMaterial({ color: "#1e1b4b", roughness: 0.9, metalness: 0.1 }),
-      )
+      // Life-like Earth (user asked specifically for this, after an
+      // earlier dark-stylized-only pass read as too flat/abstract): a true-
+      // color day-lit photo texture plus a topology bump map for visible
+      // terrain relief (mountains/ridges actually catch the light instead
+      // of a flat-shaded sphere). Both vendored into /public (244KB + 378KB)
+      // rather than fetched from a CDN at runtime, same pattern as the
+      // MapLibre worker fix earlier in this project.
+      .globeImageUrl("/vendor/earth-day.jpg")
+      .bumpImageUrl("/vendor/earth-topology.png")
       .showAtmosphere(true)
       .atmosphereColor(ARC_COLOR)
       .atmosphereAltitude(0.18)
@@ -108,12 +110,26 @@ export default function TravelGlobe({
     // otherwise show zero pins until the user manually orbits it (a real
     // issue found during QA on the previous r3f globe) -- frame that
     // cluster on load instead. `0` transition ms = immediate, not animated.
-    globe.pointOfView({ lat: 10, lng: 120, altitude: 2.2 }, 0);
+    // Altitude 2.6 (up from 2.2): a touch further out, leaving visible
+    // padding around the sphere by default rather than it nearly touching
+    // the container edges.
+    globe.pointOfView({ lat: 10, lng: 120, altitude: 2.6 }, 0);
 
     const controls = globe.controls();
     controls.autoRotate = !reducedMotion;
     controls.autoRotateSpeed = 0.6;
     controls.enableZoom = true;
+    // Without limits, scroll-to-zoom can pull the camera close enough that
+    // the sphere fills the entire frame with almost no visible curvature
+    // (reported live, screenshotted: a near-flat dark mass with one pin
+    // barely peeking in from the edge). globe.gl's default globe radius is
+    // 100 units; clamping keeps every zoom level between "see the globe as
+    // a globe" and "see detail without it swallowing the container." Raised
+    // the floor from 180 to 240 after a second live report -- the sphere
+    // was still touching/clipping past the container's rounded edges at
+    // the old minimum, especially in a wide (non-square) box.
+    controls.minDistance = 240;
+    controls.maxDistance = 520;
 
     const resize = () => {
       globe.width(container.clientWidth).height(container.clientHeight);
@@ -132,7 +148,7 @@ export default function TravelGlobe({
   return (
     <div
       ref={containerRef}
-      className="h-[60vh] min-h-[360px] w-full overflow-hidden rounded-[2rem]"
+      className="mx-auto aspect-square w-full max-w-3xl overflow-hidden rounded-[2rem]"
     />
   );
 }

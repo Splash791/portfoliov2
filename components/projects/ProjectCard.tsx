@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import type { Project } from "@/data/projects";
 
 // Deterministic gradient fallback for covers (schema: `cover` falls back to
@@ -68,10 +69,28 @@ export default function ProjectCard({
         </span>
       )}
 
-      <div
-        aria-hidden
-        className={`w-full bg-gradient-to-br ${gradient} ${featured ? "h-48 lg:h-64" : "h-36"}`}
-      />
+      {/* Image slot: set `cover` in data/projects.ts (e.g. "/images/projects/<slug>.png",
+          file dropped in public/images/projects/) and it renders here automatically.
+          Falls back to a deterministic gradient when no cover is set, so the
+          grid stays uniform for projects without a screenshot yet. */}
+      {project.cover ? (
+        <div
+          className={`relative w-full overflow-hidden ${featured ? "h-48 lg:h-64" : "h-36"}`}
+        >
+          <Image
+            src={project.cover}
+            alt=""
+            fill
+            sizes={featured ? "(min-width: 1024px) 66vw, 100vw" : "(min-width: 1024px) 33vw, 100vw"}
+            className="object-cover"
+          />
+        </div>
+      ) : (
+        <div
+          aria-hidden
+          className={`w-full bg-gradient-to-br ${gradient} ${featured ? "h-48 lg:h-64" : "h-36"}`}
+        />
+      )}
       <div className="flex flex-1 flex-col gap-2 px-5 py-4">
         <h3 className={`font-serif text-ink ${featured ? "text-2xl" : "text-xl"}`}>
           {project.title}

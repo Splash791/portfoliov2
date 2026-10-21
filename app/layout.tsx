@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
-import Nav from "@/components/ui/Nav";
 import Cursor from "@/components/ui/Cursor";
 import PageTransition from "@/components/ui/PageTransition";
 import SmoothScroll from "@/components/ui/SmoothScroll";
@@ -57,7 +56,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col bg-paper text-ink font-sans">
         <SmoothScroll />
         <Cursor />
-        <Nav />
         <PageTransition>{children}</PageTransition>
       </body>
     </html>

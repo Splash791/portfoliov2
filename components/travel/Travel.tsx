@@ -9,7 +9,7 @@ import TripGallery from "./TripGallery";
 
 function GlobeFallback({ reason }: { reason: string }) {
   return (
-    <div className="glass flex h-[60vh] min-h-[360px] w-full items-center justify-center rounded-[2rem]">
+    <div className="glass mx-auto flex aspect-square w-full max-w-3xl items-center justify-center rounded-[2rem]">
       <p className="font-mono text-xs text-ink/65">{reason}</p>
     </div>
   );
