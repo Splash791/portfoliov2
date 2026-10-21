@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import type { Project } from "@/data/projects";
+import PhotoCarousel from "@/components/ui/PhotoCarousel";
 
 // Deterministic gradient fallback for covers (schema: `cover` falls back to
 // a generated gradient when absent — every project is missing one right now).
@@ -69,11 +70,24 @@ export default function ProjectCard({
         </span>
       )}
 
-      {/* Image slot: set `cover` in data/projects.ts (e.g. "/images/projects/<slug>.png",
-          file dropped in public/images/projects/) and it renders here automatically.
-          Falls back to a deterministic gradient when no cover is set, so the
-          grid stays uniform for projects without a screenshot yet. */}
-      {project.cover ? (
+      {/* Image slot (data/projects.ts): `images: [{src,alt}, ...]` renders a
+          carousel (prev/next + dots); a single `cover` renders a static
+          image; neither falls back to a deterministic gradient so the grid
+          stays uniform for projects without screenshots yet. */}
+      {project.images && project.images.length > 0 ? (
+        // No prev/next/dot controls here -- the whole card is itself a
+        // <button> (opens the modal), and nested <button>s are invalid
+        // HTML. Auto-advance still cycles multiple images; the full
+        // interactive carousel (with controls) belongs in the modal.
+        <PhotoCarousel
+          photos={project.images}
+          reducedMotion={reducedMotion}
+          aspectClassName={featured ? "h-48 lg:h-64" : "h-36"}
+          rounded="rounded-none"
+          sizes={featured ? "(min-width: 1024px) 66vw, 100vw" : "(min-width: 1024px) 33vw, 100vw"}
+          showControls={false}
+        />
+      ) : project.cover ? (
         <div
           className={`relative w-full overflow-hidden ${featured ? "h-48 lg:h-64" : "h-36"}`}
         >

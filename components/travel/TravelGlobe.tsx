@@ -118,18 +118,12 @@ export default function TravelGlobe({
     const controls = globe.controls();
     controls.autoRotate = !reducedMotion;
     controls.autoRotateSpeed = 0.6;
-    controls.enableZoom = true;
-    // Without limits, scroll-to-zoom can pull the camera close enough that
-    // the sphere fills the entire frame with almost no visible curvature
-    // (reported live, screenshotted: a near-flat dark mass with one pin
-    // barely peeking in from the edge). globe.gl's default globe radius is
-    // 100 units; clamping keeps every zoom level between "see the globe as
-    // a globe" and "see detail without it swallowing the container." Raised
-    // the floor from 180 to 240 after a second live report -- the sphere
-    // was still touching/clipping past the container's rounded edges at
-    // the old minimum, especially in a wide (non-square) box.
-    controls.minDistance = 240;
-    controls.maxDistance = 520;
+    // Zoom locked entirely per direct request, after two rounds of the
+    // sphere clipping past its container at various zoom levels (fixed via
+    // distance clamping, then a square container) -- disabling scroll/pinch
+    // zoom outright removes that whole failure class rather than continuing
+    // to tune a range. Orbit (drag-to-rotate) stays enabled.
+    controls.enableZoom = false;
 
     const resize = () => {
       globe.width(container.clientWidth).height(container.clientHeight);

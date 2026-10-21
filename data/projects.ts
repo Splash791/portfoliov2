@@ -3,10 +3,14 @@
 // URLs are invented. `stack`/`links`/cover/video/screenshots/architecture/
 // metrics are left empty or undefined until real assets exist (section 11).
 //
-// To add a project image: drop the file in public/images/projects/ and set
-// `cover: "/images/projects/<filename>"` on that project below — ProjectCard
-// renders it automatically (no code changes needed). Projects without a
-// `cover` keep the generated-gradient fallback so the grid stays uniform.
+// To add project images: drop files in public/images/projects/ and either:
+//   - set `images: [{ src: "/images/projects/<file>", alt: "..." }, ...]`
+//     for multiple -- the card shows them as a carousel (prev/next + dots),
+//   - or set just `cover: "/images/projects/<file>"` for a single static
+//     image (no carousel chrome).
+// ProjectCard renders either automatically, no code changes needed. `images`
+// takes priority over `cover` if both are set. Projects with neither keep
+// the generated-gradient fallback so the grid stays uniform.
 
 export type Project = {
   slug: string;
@@ -14,7 +18,8 @@ export type Project = {
   summary: string; // summary = problem + approach
   stack: string[];
   links: { github?: string; demo?: string };
-  cover?: string; // falls back to a generated gradient when absent
+  cover?: string; // single static image; falls back to a generated gradient when absent
+  images?: { src: string; alt: string }[]; // multiple images -> rendered as a carousel, takes priority over `cover`
   video?: string;
   screenshots?: string[];
   architecture?: string;
@@ -23,7 +28,22 @@ export type Project = {
   featured?: boolean; // renders as the larger bento tile in the grid
 };
 
+// Order = importance (FarmOS first, per direct instruction), not chronology.
 export const projects: Project[] = [
+  {
+    slug: "farmos",
+    title: "FarmOS",
+    // Real fact (user-provided, not a placeholder): FarmOS won the Gemini
+    // track at QuackHack. Everything else about this project is still
+    // generic placeholder, same as the rest of this file — no other
+    // specifics were given, so none are invented.
+    summary:
+      "A farm-management dashboard — won the Gemini track at QuackHack. The rest of the write-up (problem detail, approach, stack) is still TODO.",
+    stack: [],
+    links: {},
+    metrics: [{ label: "QuackHack", value: "Gemini track winner" }],
+    featured: true,
+  },
   {
     slug: "ai-hallucination-detector",
     title: "AI Hallucination Detector",
@@ -39,20 +59,6 @@ export const projects: Project[] = [
       "Project summary goes here, 2-3 sentences on the problem this search tool addresses and how it was built. Replace with the real write-up.",
     stack: [],
     links: {},
-  },
-  {
-    slug: "farmos",
-    title: "FarmOS",
-    // Real fact (user-provided, not a placeholder): FarmOS won the Gemini
-    // track at QuackHack. Everything else about this project is still
-    // generic placeholder, same as the rest of this file — no other
-    // specifics were given, so none are invented.
-    summary:
-      "A farm-management dashboard — won the Gemini track at QuackHack. The rest of the write-up (problem detail, approach, stack) is still TODO.",
-    stack: [],
-    links: {},
-    metrics: [{ label: "QuackHack", value: "Gemini track winner" }],
-    featured: true,
   },
   {
     slug: "ocr-expense-tracker",

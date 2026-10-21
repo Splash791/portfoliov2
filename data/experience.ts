@@ -1,8 +1,3 @@
-// TODO: every `start`/`end` date below is a placeholder ("20XX") — real dates
-// were never given in portfolio-plan.md, so none were invented. Replace
-// before launch. Summaries are placeholder copy per section 0's rule
-// ("never invent facts about my experience... metrics, dates").
-
 export type Experience = {
   org: string;
   role: string;
@@ -13,6 +8,10 @@ export type Experience = {
   details?: string[];
 };
 
+// Chronological order (earliest start first). `featured` still renders
+// Deloitte separately/prominently above this grid regardless of array
+// position (see components/experience/Experience.tsx) -- this ordering
+// controls the array itself and the non-featured grid below it.
 export const experience: Experience[] = [
   {
     org: "Oregon State University",
@@ -39,6 +38,18 @@ export const experience: Experience[] = [
     ],
   },
   {
+    org: "Coordinator",
+    role: "Mobile Development Intern",
+    start: "January 2026 - April 2026",
+    featured: false,
+    summary:
+      "Startup within the NVIDIA Inception Program.",
+    details: [
+      "Integrated and managed backend connectivity with Better Auth and TanStack Query, implementing secure authentication flows, efficient API communication, and reliable client-side data caching tailored for mobile architecture.",
+      "Headed the migration of an existing web application to a cross-platform mobile app using React Native and Expo, ensuring functionality and performance across iOS and Android while maintaining feature parity with the web product.",
+    ],
+  },
+  {
     org: "Deloitte",
     role: "Software Engineer Intern",
     start: "June 2026",
@@ -51,29 +62,4 @@ export const experience: Experience[] = [
       "- Built a RAID log and dashboard to track risks, assumptions, issues, and dependencies, surfacing blockers early and keeping the team, client, and senior leadership aligned on project status throughout the engagement.",
     ],
   },
-  {
-    org: "Coordinator",
-    role: "Mobile Development Intern",
-    start: "January 2026 - April 2026",
-    featured: false,
-    summary:
-      "Startup within the NVIDIA Inception Program.",
-    details: [
-      "Integrated and managed backend connectivity with Better Auth and TanStack Query, implementing secure authentication flows, efficient API communication, and reliable client-side data caching tailored for mobile architecture.",
-      "Headed the migration of an existing web application to a cross-platform mobile app using React Native and Expo, ensuring functionality and performance across iOS and Android while maintaining feature parity with the web product.",
-
-    ],
-  },
-  // {
-  //   // // TODO: placeholder entry — the plan references "other leadership roles"
-  //   // // without naming a specific organization. Replace org/role/summary with
-  //   // // the real one(s) before launch; do not invent a club/org name.
-  //   // org: "Leadership Role (TBD)",
-  //   // role: "Leadership Role (TBD)",
-  //   // start: "20XX",
-  //   // featured: false,
-  //   // summary:
-  //   //   "Placeholder for an additional leadership role mentioned in the plan but not yet named. Swap in the real organization, role, and summary.",
-  //   // details: ["TODO: replace this entire entry with the real organization and role."],
-  // },
 ];
