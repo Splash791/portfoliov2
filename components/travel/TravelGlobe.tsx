@@ -2,12 +2,11 @@
 
 import { useEffect, useRef } from "react";
 import Globe, { type GlobeInstance } from "globe.gl";
-import type { Trip } from "@/data/trips";
+import { TRIP_PIN_COLORS, type Trip } from "@/data/trips";
 
 // Default export only (dynamically imported with { ssr: false } from
 // Travel.tsx) -- this file must never run on the server.
 
-const PIN_COLORS = ["#ff6f59", "#8c7ae6", "#f6ae2d"];
 const ARC_COLOR = "#8c7ae6";
 
 type GlobePoint = { lat: number; lng: number; color: string; tripSlug: string };
@@ -40,7 +39,7 @@ export default function TravelGlobe({
       trip.stops.map((stop) => ({
         lat: stop.lat,
         lng: stop.lng,
-        color: PIN_COLORS[ti % PIN_COLORS.length],
+        color: TRIP_PIN_COLORS[ti % TRIP_PIN_COLORS.length],
         tripSlug: trip.slug,
       })),
     );
@@ -150,8 +149,16 @@ export default function TravelGlobe({
   return (
     <div
       ref={containerRef}
-      // max-w-6xl (72rem) = 1.5x the previous max-w-3xl (48rem), per direct request.
-      className="mx-auto aspect-square w-full max-w-6xl overflow-hidden rounded-[2rem]"
+      // A single `w-[min(...)]` expression, not separate max-w/max-h: that
+      // earlier version let max-h bind tighter than max-w on most screens,
+      // quietly rendering a visibly smaller globe than the max-w alone
+      // implied. Sizing off one value (and letting `aspect-square` derive
+      // height from it) keeps the box an actual square always, bounded by
+      // whichever of "91.2rem", "112dvh" (1.6x the prior 57rem/70dvh, per
+      // direct request -- note 112dvh exceeds a full viewport, so the
+      // height term no longer actually limits anything; container width
+      // or the 91.2rem cap is what binds now), or "100%" is smallest.
+      className="mx-auto aspect-square w-[min(91.2rem,112dvh,100%)] overflow-hidden rounded-[2rem]"
     />
   );
 }

@@ -35,6 +35,7 @@ export default function ProjectCard({
   const gradient = GRADIENTS[index % GRADIENTS.length];
   const stackPreview = project.stack.slice(0, 3);
   const featured = !!project.featured;
+  const isPlaceholder = !!project.placeholder;
 
   return (
     <motion.button
@@ -55,7 +56,17 @@ export default function ProjectCard({
           : { rotate: index % 2 === 0 ? -1 : 1, scale: 1.015 }
       }
       transition={{ duration: 0.2 }}
-      style={isOpen ? { opacity: 0, pointerEvents: "none" } : undefined}
+      // Dashed border marks this as a known-placeholder slot, same
+      // convention as the hero headshot box and PhotoCarousel's empty
+      // state -- it must win over `.glass`'s own border shorthand at
+      // equal specificity, so it's set inline rather than as a class.
+      style={
+        isOpen
+          ? { opacity: 0, pointerEvents: "none" }
+          : isPlaceholder
+            ? { borderStyle: "dashed" }
+            : undefined
+      }
       className={`glass relative flex flex-col overflow-hidden rounded-[1.75rem] text-left ${
         // Bento sizing: the featured tile spans 2 columns so it reads as
         // the standout tile. Deliberately width-only, no row-span/fixed
@@ -65,7 +76,7 @@ export default function ProjectCard({
       }`}
     >
       {featured && (
-        <span className="glass absolute right-4 top-4 z-10 rounded-full px-3 py-1 font-mono text-[0.65rem] uppercase tracking-wide text-ink/80">
+        <span className="glass absolute right-4 top-4 z-10 rounded-full px-3 py-1 font-mono text-xs uppercase tracking-wide text-ink/80">
           Featured
         </span>
       )}
@@ -120,7 +131,7 @@ export default function ProjectCard({
             {project.metrics.map((metric) => (
               <span
                 key={metric.label}
-                className="rounded-full bg-coral/15 px-2.5 py-1 font-mono text-[0.65rem] text-ink"
+                className="rounded-full bg-coral/15 px-2.5 py-1 font-mono text-xs text-ink"
               >
                 {metric.label}: {metric.value}
               </span>
@@ -128,17 +139,29 @@ export default function ProjectCard({
           </div>
         )}
 
-        {stackPreview.length > 0 && (
+        {isPlaceholder ? (
+          // Fills the same slot the stack-chip row would occupy, so a
+          // placeholder card doesn't just leave unexplained blank space
+          // under its summary -- names itself as "in progress" rather
+          // than reading as abandoned next to a finished card.
           <div className="mt-1 flex flex-wrap gap-1.5">
-            {stackPreview.map((tech) => (
-              <span
-                key={tech}
-                className="rounded-full bg-ink/5 px-2.5 py-1 font-mono text-[0.65rem] text-ink/75"
-              >
-                {tech}
-              </span>
-            ))}
+            <span className="rounded-full border border-dashed border-ink/20 bg-ink/5 px-2.5 py-1 font-mono text-xs text-ink/65">
+              Write-up in progress
+            </span>
           </div>
+        ) : (
+          stackPreview.length > 0 && (
+            <div className="mt-1 flex flex-wrap gap-1.5">
+              {stackPreview.map((tech) => (
+                <span
+                  key={tech}
+                  className="rounded-full bg-ink/5 px-2.5 py-1 font-mono text-xs text-ink/75"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+          )
         )}
       </div>
     </motion.button>

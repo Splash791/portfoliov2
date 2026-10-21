@@ -90,9 +90,25 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative flex min-h-[90vh] w-full items-center justify-center overflow-hidden px-6 py-16"
+      // `min-h-dvh`, not a shorter 90vh: Hero sits inside SnapSection's own
+      // `min-h-dvh flex justify-center` wrapper, so a shorter inner section
+      // left a gap above/below where the wrapper's extra height showed
+      // through as plain paper background instead of the blob gradient --
+      // matching this section's height to its wrapper's closes that gap,
+      // so the blobs cover the full first viewport edge-to-edge.
+      className="relative flex min-h-dvh w-full items-center justify-center overflow-hidden px-6 py-16"
     >
       <Blobs reducedMotion={!!reducedMotion} />
+
+      {/* Static fade into the next (plain-paper) section -- not scroll- or
+          motion-driven, so it needs no reduced-motion gate. Sits above the
+          blobs (-z-10) but below the glass hero card (z-10) so scrolling
+          from the now-full-bleed Hero straight into About's flat background
+          reads as a soft bridge instead of a hard color cut. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-32 bg-gradient-to-b from-transparent to-paper sm:h-48"
+      />
 
       <motion.div
         // `reducedMotion` is hydration-safe (always `false` on the very
@@ -164,11 +180,11 @@ export default function Hero() {
                 View Projects
               </a>
             </Magnetic>
-            {/* TODO: no real LinkedIn URL was provided in the plan — replace href before launch. */}
             <Magnetic>
               <a
-                href="#"
-                data-placeholder="linkedin-url"
+                href="https://www.linkedin.com/in/tyler-quach-/"
+                target="_blank"
+                rel="noreferrer"
                 className="glass rounded-full px-6 py-3 font-mono text-sm text-ink transition-transform hover:scale-[1.03]"
               >
                 Connect on LinkedIn

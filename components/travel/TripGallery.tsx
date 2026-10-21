@@ -104,7 +104,7 @@ export default function TripGallery({
               ×
             </button>
 
-            <p className="font-mono text-[0.65rem] uppercase tracking-wide text-ink/70">
+            <p className="font-mono text-xs uppercase tracking-wide text-ink/70">
               {trip.status === "upcoming" ? "Upcoming" : "Past trip"}
             </p>
             <h3
@@ -164,7 +164,7 @@ export default function TripGallery({
               <div
                 data-placeholder="trip-photos"
                 style={{ borderStyle: "dashed" }}
-                className="glass mt-5 flex items-center justify-center rounded-xl py-8 font-mono text-[0.65rem] text-ink/65"
+                className="glass mt-5 flex items-center justify-center rounded-xl py-8 font-mono text-xs text-ink/65"
               >
                 Photo gallery placeholder
               </div>

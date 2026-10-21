@@ -4,6 +4,7 @@ import Experience from "@/components/experience/Experience";
 import Projects from "@/components/projects/Projects";
 import Travel from "@/components/travel/Travel";
 import Writing from "@/components/writing/Writing";
+import Connect from "@/components/connect/Connect";
 import Footer from "@/components/ui/Footer";
 import SnapSection from "@/components/ui/SnapSection";
 import { getAllPosts } from "@/lib/blog";
@@ -35,6 +36,10 @@ export default function Home() {
 
       <SnapSection>
         <Writing posts={posts} />
+      </SnapSection>
+
+      <SnapSection>
+        <Connect />
       </SnapSection>
 
       {/* Footer deliberately isn't snapped -- it's a closing strip, not a

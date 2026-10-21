@@ -4,12 +4,14 @@ import dynamic from "next/dynamic";
 import { useRef, useState, useSyncExternalStore } from "react";
 import { useInView } from "framer-motion";
 import { useReducedMotionSafe } from "@/lib/motion";
-import { trips } from "@/data/trips";
+import { trips, TRIP_PIN_COLORS } from "@/data/trips";
 import TripGallery from "./TripGallery";
 
 function GlobeFallback({ reason }: { reason: string }) {
+  // Matches TravelGlobe.tsx's own sizing exactly, so swapping between the
+  // fallback and the real globe never changes the section's layout size.
   return (
-    <div className="glass mx-auto flex aspect-square w-full max-w-6xl items-center justify-center rounded-[2rem]">
+    <div className="glass mx-auto flex aspect-square w-[min(91.2rem,112dvh,100%)] items-center justify-center rounded-[2rem]">
       <p className="font-mono text-xs text-ink/65">{reason}</p>
     </div>
   );
@@ -61,13 +63,13 @@ export default function Travel() {
     <section
       id="travel"
       ref={sectionRef}
-      // Wider than the other sections' max-w-5xl specifically so the
-      // globe's own max-w-6xl (1.5x its previous size, per direct request)
-      // isn't clamped back down by this wrapper -- a circular globe needs
-      // more horizontal room than a text column does.
+      // Wider than the other sections' max-w-5xl so a square globe has
+      // horizontal room, though the globe itself is now capped well below
+      // this (see max-w-lg below) so the whole section -- heading, globe,
+      // legend -- fits one viewport instead of needing a scroll inside it.
       className="relative mx-auto w-full max-w-7xl px-6 py-24 sm:py-32"
     >
-      <h2 className="mb-10 font-mono text-xs uppercase tracking-wide text-ink/70">Travel</h2>
+      <h2 className="mb-6 font-mono text-xs uppercase tracking-wide text-ink/70">Travel</h2>
 
       {!webglAvailable ? (
         <GlobeFallback reason="3D globe isn't available on this device." />
@@ -76,6 +78,36 @@ export default function Travel() {
       ) : (
         <GlobeFallback reason="Loading globe…" />
       )}
+
+      {/* Always-visible instruction + legend -- a hover-only cursor swap on
+          the globe itself (TravelGlobe.tsx's onPointHover) is the only
+          other affordance a flat pin on a 3D surface has, and that's
+          invisible on touch and unreachable by keyboard. These buttons are
+          a real, independently-focusable path into each trip gallery that
+          works identically on touch/desktop/keyboard, and (since they don't
+          touch the canvas at all) even when WebGL isn't available. */}
+      <div className="mx-auto mt-4 flex max-w-lg flex-col items-center gap-2">
+        <p className="font-mono text-xs text-ink/65">
+          Tap a pin on the globe, or pick a trip below.
+        </p>
+        <div className="flex flex-wrap items-center justify-center gap-2">
+          {trips.map((trip, i) => (
+            <button
+              key={trip.slug}
+              type="button"
+              onClick={() => setSelectedTripSlug(trip.slug)}
+              className="glass flex items-center gap-2 rounded-full px-3 py-1.5 font-mono text-xs text-ink/80 transition-transform hover:scale-[1.03]"
+            >
+              <span
+                aria-hidden
+                className="h-2 w-2 shrink-0 rounded-full"
+                style={{ backgroundColor: TRIP_PIN_COLORS[i % TRIP_PIN_COLORS.length] }}
+              />
+              {trip.title}
+            </button>
+          ))}
+        </div>
+      </div>
 
       <TripGallery
         trip={selectedTrip}

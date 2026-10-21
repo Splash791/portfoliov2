@@ -5,10 +5,10 @@ export default function Footer() {
         <p className="font-mono text-xs text-ink/70">
           © {new Date().getFullYear()} Tyler Quach
         </p>
-        {/* TODO: no real LinkedIn URL was provided in the plan — replace href before launch. */}
         <a
-          href="#"
-          data-placeholder="linkedin-url"
+          href="https://www.linkedin.com/in/tyler-quach-/"
+          target="_blank"
+          rel="noreferrer"
           className="font-mono text-xs text-ink/70 transition-colors hover:text-ink"
         >
           LinkedIn

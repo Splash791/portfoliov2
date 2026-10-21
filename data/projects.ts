@@ -17,7 +17,7 @@ export type Project = {
   title: string;
   summary: string; // summary = problem + approach
   stack: string[];
-  links: { github?: string; demo?: string };
+  links: { github?: string; demo?: string; devpost?: string };
   cover?: string; // single static image; falls back to a generated gradient when absent
   images?: { src: string; alt: string }[]; // multiple images -> rendered as a carousel, takes priority over `cover`
   video?: string;
@@ -26,6 +26,7 @@ export type Project = {
   metrics?: { label: string; value: string }[];
   demoEmbed?: string; // reserved for later live demos (not v1)
   featured?: boolean; // renders as the larger bento tile in the grid
+  placeholder?: boolean; // marks a generic, not-yet-written-up card so it reads as "in progress", not abandoned
 };
 
 // Order = importance (FarmOS first, per direct instruction), not chronology.
@@ -51,6 +52,7 @@ export const projects: Project[] = [
       "Project summary goes here, 2-3 sentences: the problem is flagging unreliable or fabricated output from language models, and the approach taken to detect it. Replace with the real write-up.",
     stack: [],
     links: {},
+    placeholder: true,
   },
   {
     slug: "aerosearch",
@@ -59,6 +61,7 @@ export const projects: Project[] = [
       "Project summary goes here, 2-3 sentences on the problem this search tool addresses and how it was built. Replace with the real write-up.",
     stack: [],
     links: {},
+    placeholder: true,
   },
   {
     slug: "ocr-expense-tracker",
@@ -67,5 +70,6 @@ export const projects: Project[] = [
       "Project summary goes here, 2-3 sentences on how receipts are read via OCR and turned into tracked expenses. Replace with the real write-up.",
     stack: [],
     links: {},
+    placeholder: true,
   },
 ];

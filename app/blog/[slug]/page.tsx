@@ -47,12 +47,12 @@ export default async function BlogPostPage({
           {post.meta.tags.map((tag) => (
             <span
               key={tag}
-              className="rounded-full bg-ink/5 px-3 py-1 font-mono text-[0.65rem] text-ink/75"
+              className="rounded-full bg-ink/5 px-3 py-1 font-mono text-xs text-ink/75"
             >
               {tag}
             </span>
           ))}
-          <span className="font-mono text-[0.65rem] text-ink/65">
+          <span className="font-mono text-xs text-ink/65">
             {post.meta.readingTime}
           </span>
         </div>
@@ -65,8 +65,13 @@ export default async function BlogPostPage({
             instead of pulling in @tailwindcss/typography for a handful of
             headings/paragraphs/lists — the lighter option (section 0).
             max-w caps reading-line length even though the article container
-            itself can stretch wider on large desktop viewports (1440px). */}
-        <div className="mdx-body mt-8 max-w-[65ch] text-sm leading-relaxed text-ink/80 sm:text-base">
+            itself can stretch wider on large desktop viewports (1440px).
+            A fixed rem value, not `ch`: Geist Variable's own `ch` (the "0"
+            glyph's width) measures noticeably wider than this font's real
+            average character width, so `max-w-[65ch]` rendered at ~87-89
+            characters/line in practice (detected live), not 65 -- well past
+            the 65-75ch reading measure this is supposed to enforce. */}
+        <div className="mdx-body mt-8 max-w-[35rem] text-sm leading-relaxed text-ink/80 sm:text-base">
           <MDXRemote source={post.content} />
         </div>
       </article>

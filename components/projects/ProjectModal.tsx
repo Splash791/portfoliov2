@@ -90,6 +90,10 @@ export default function ProjectModal({
                 ? { duration: 0 }
                 : { duration: durations.base, ease: easing.out }
             }
+            // Dashed border carries the card's placeholder signal through
+            // the shared-element morph instead of snapping to a solid
+            // border mid-animation.
+            style={project.placeholder ? { borderStyle: "dashed" } : undefined}
             className="glass relative z-10 max-h-[90vh] w-full max-w-[calc(100vw-2rem)] overflow-y-auto rounded-[2rem] p-6 sm:max-w-lg sm:p-8"
           >
             <button
@@ -113,6 +117,12 @@ export default function ProjectModal({
               {project.summary}
             </p>
 
+            {project.placeholder && (
+              <span className="mt-3 inline-block rounded-full border border-dashed border-ink/20 bg-ink/5 px-2.5 py-1 font-mono text-xs text-ink/65">
+                Write-up in progress
+              </span>
+            )}
+
             {/* Optional blocks below render only when the data is present.
                 All 7 projects currently have these undefined (section 11:
                 no real assets yet), so none of these blocks render at all
@@ -135,7 +145,7 @@ export default function ProjectModal({
               <dl className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
                 {project.metrics.map((metric) => (
                   <div key={metric.label} className="rounded-xl bg-ink/5 px-3 py-2">
-                    <dt className="font-mono text-[0.6rem] uppercase text-ink/70">
+                    <dt className="font-mono text-xs uppercase text-ink/70">
                       {metric.label}
                     </dt>
                     <dd className="mt-0.5 text-sm text-ink">{metric.value}</dd>
@@ -181,7 +191,7 @@ export default function ProjectModal({
               </div>
             )}
 
-            {(project.links.github || project.links.demo) && (
+            {(project.links.github || project.links.demo || project.links.devpost) && (
               <div className="mt-6 flex flex-wrap gap-3">
                 {project.links.github && (
                   <a
@@ -201,6 +211,16 @@ export default function ProjectModal({
                     className="glass rounded-full px-5 py-2.5 font-mono text-xs text-ink"
                   >
                     Demo
+                  </a>
+                )}
+                {project.links.devpost && (
+                  <a
+                    href={project.links.devpost}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="glass rounded-full px-5 py-2.5 font-mono text-xs text-ink"
+                  >
+                    Devpost
                   </a>
                 )}
               </div>

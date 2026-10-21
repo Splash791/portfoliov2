@@ -17,14 +17,9 @@ export default function Writing({ posts }: { posts: PostMeta[] }) {
       className="relative mx-auto w-full max-w-5xl px-6 py-24 sm:py-32"
     >
       <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <p className="font-mono text-xs uppercase tracking-wide text-ink/70">
-            Blog
-          </p>
-          <h2 className="mt-2 font-serif text-3xl text-ink sm:text-4xl">
-            Notes on what I&apos;m building and learning
-          </h2>
-        </div>
+        <h2 className="font-serif text-3xl text-ink sm:text-4xl">
+          Notes on what I&apos;m building and learning
+        </h2>
         <Link
           href="/blog"
           className="shrink-0 font-mono text-xs text-ink/75 underline-offset-4 transition-colors hover:text-ink hover:underline"
@@ -62,12 +57,12 @@ export default function Writing({ posts }: { posts: PostMeta[] }) {
                 {post.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="rounded-full bg-ink/5 px-3 py-1 font-mono text-[0.65rem] text-ink/75"
+                    className="rounded-full bg-ink/5 px-3 py-1 font-mono text-xs text-ink/75"
                   >
                     {tag}
                   </span>
                 ))}
-                <span className="font-mono text-[0.65rem] text-ink/65">
+                <span className="font-mono text-xs text-ink/65">
                   {post.readingTime}
                 </span>
               </div>

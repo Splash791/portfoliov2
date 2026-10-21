@@ -13,12 +13,7 @@ export default function BlogIndexPage() {
 
   return (
     <main className="mx-auto w-full max-w-3xl px-6 py-24 sm:py-32">
-      <p className="font-mono text-xs uppercase tracking-wide text-ink/70">
-        Blog
-      </p>
-      <h1 className="mt-2 font-serif text-4xl text-ink sm:text-5xl">
-        All posts
-      </h1>
+      <h1 className="font-serif text-4xl text-ink sm:text-5xl">All posts</h1>
 
       <ul className="mt-10 flex flex-col gap-4">
         {posts.map((post) => (
@@ -37,12 +32,12 @@ export default function BlogIndexPage() {
                 {post.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="rounded-full bg-ink/5 px-3 py-1 font-mono text-[0.65rem] text-ink/75"
+                    className="rounded-full bg-ink/5 px-3 py-1 font-mono text-xs text-ink/75"
                   >
                     {tag}
                   </span>
                 ))}
-                <span className="font-mono text-[0.65rem] text-ink/65">
+                <span className="font-mono text-xs text-ink/65">
                   {post.readingTime}
                 </span>
               </div>

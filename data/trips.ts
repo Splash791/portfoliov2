@@ -1,13 +1,11 @@
-// TODO(section 12): exact stops/routes/photos/notes per trip are still open
-// ("Which trip photos/notes to include for each trip, and how many per
-// gallery?"). Country/city names and dates below are the ones explicitly
-// given in portfolio-plan.md section 7 — nothing else is invented. Where a
-// trip only names a country (Japan; Australia + Vietnam), the stop below
-// uses that country's capital/largest city as a representative map point
-// since no specific itinerary was given — replace with the real cities.
-// `routes` legs are placeholders (mode is the only physically-sensible
-// choice, e.g. a flight between Australia and Vietnam) pending the real
-// itinerary.
+// Trip list replaced per direct instruction with the real destinations
+// given in chat: Japan, New Zealand, Hong Kong + Singapore, Juneau
+// (Alaska), Paris, Rome, and Vietnam. Where only a country was named (Japan,
+// New Zealand, Vietnam), the stop below uses that country's capital/largest
+// city as a representative map point since no specific itinerary was
+// given -- replace with the real stops. `status` (past vs. upcoming) was
+// not specified for any of these and is defaulted to "past" below --
+// correct any that are actually upcoming. Photos/notes are still open too.
 
 export type Trip = {
   slug: string;
@@ -19,11 +17,29 @@ export type Trip = {
   notes?: string;
 };
 
+// Shared with TravelGlobe.tsx's pin colors and Travel.tsx's legend dots, so
+// the two can never drift out of sync. Lives here (not in TravelGlobe.tsx)
+// because that file does a top-level `import Globe from "globe.gl"`, which
+// touches browser globals at module-evaluation time -- Travel.tsx can't
+// import anything from it directly without defeating the `ssr: false`
+// dynamic import that keeps globe.gl off the server bundle.
+//
+// Five colors (the full DESIGN.md warm-accent family), not three: with
+// 7 trips, a shorter cycle would repeat the same pin color across trips
+// that sit right next to each other in the legend -- five keeps repeats
+// to a non-adjacent pair instead of every other trip.
+export const TRIP_PIN_COLORS = [
+  "#ff6f59", // ember coral
+  "#8c7ae6", // dusk violet
+  "#f6ae2d", // golden amber
+  "#e8527a", // warm rose
+  "#ffb88c", // soft peach
+];
+
 export const trips: Trip[] = [
   {
     slug: "japan",
     title: "Japan",
-    // Sept 2026, per the plan — already past relative to today.
     status: "past",
     stops: [
       // TODO: Tokyo used as a placeholder representative point for "Japan" —
@@ -31,32 +47,69 @@ export const trips: Trip[] = [
       { name: "Tokyo, Japan", lat: 35.6762, lng: 139.6503 },
     ],
     routes: [],
-    // TODO: notes/photos not provided yet (section 12).
+    // TODO: notes/photos not provided yet.
   },
   {
-    slug: "london",
-    title: "London",
+    slug: "new-zealand",
+    title: "New Zealand",
     status: "past",
-    stops: [{ name: "London", lat: 51.5072, lng: -0.1276 }],
+    stops: [
+      // TODO: Auckland used as a placeholder representative point for
+      // "New Zealand" — no specific city/itinerary was given.
+      { name: "Auckland, New Zealand", lat: -36.8485, lng: 174.7633 },
+    ],
     routes: [],
-    // TODO: no specific study-abroad dates given; notes/photos not provided yet.
+    // TODO: notes/photos not provided yet.
   },
   {
-    slug: "australia-vietnam",
-    title: "Australia + Vietnam",
-    // Dec 2026 – Jan 2027, per the plan — explicitly "upcoming".
-    status: "upcoming",
+    slug: "hong-kong-singapore",
+    title: "Hong Kong + Singapore",
+    status: "past",
     stops: [
-      // TODO: Canberra/Hanoi used as placeholder representative points —
-      // no specific cities/itinerary were given. Replace with the real stops.
-      { name: "Canberra, Australia", lat: -35.2809, lng: 149.13 },
-      { name: "Hanoi, Vietnam", lat: 21.0278, lng: 105.8342 },
+      { name: "Hong Kong", lat: 22.3193, lng: 114.1694 },
+      { name: "Singapore", lat: 1.3521, lng: 103.8198 },
     ],
     routes: [
-      // A flight is the only physically sensible mode between these two
-      // countries — not a specific itinerary claim, just geography.
-      { from: "Canberra, Australia", to: "Hanoi, Vietnam", mode: "flight" },
+      // A flight is the only physically sensible mode between these two —
+      // not a specific itinerary claim, just geography.
+      { from: "Hong Kong", to: "Singapore", mode: "flight" },
     ],
-    // TODO: notes/photos not provided yet (section 12).
+    // TODO: notes/photos not provided yet.
+  },
+  {
+    slug: "juneau-alaska",
+    title: "Juneau, Alaska",
+    status: "past",
+    stops: [{ name: "Juneau, Alaska", lat: 58.3019, lng: -134.4197 }],
+    routes: [],
+    // TODO: notes/photos not provided yet.
+  },
+  {
+    slug: "paris",
+    title: "Paris, France",
+    status: "past",
+    stops: [{ name: "Paris, France", lat: 48.8566, lng: 2.3522 }],
+    routes: [],
+    // TODO: notes/photos not provided yet.
+  },
+  {
+    slug: "rome",
+    title: "Rome, Italy",
+    status: "past",
+    stops: [{ name: "Rome, Italy", lat: 41.9028, lng: 12.4964 }],
+    routes: [],
+    // TODO: notes/photos not provided yet.
+  },
+  {
+    slug: "vietnam",
+    title: "Vietnam",
+    status: "past",
+    stops: [
+      // TODO: Hanoi used as a placeholder representative point for
+      // "Vietnam" — no specific city/itinerary was given.
+      { name: "Hanoi, Vietnam", lat: 21.0278, lng: 105.8342 },
+    ],
+    routes: [],
+    // TODO: notes/photos not provided yet.
   },
 ];
