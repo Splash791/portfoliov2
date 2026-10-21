@@ -82,8 +82,16 @@ export default function TravelGlobe({
       .pointLng("lng")
       .pointColor("color")
       .pointAltitude(0.015)
-      .pointRadius(0.4)
+      // Bigger hit target per direct request -- pointRadius drives both the
+      // rendered marker size and its raycast click area together, so this
+      // makes pins both easier to see and easier to actually hit (was 0.4).
+      .pointRadius(0.9)
       .onPointClick((point) => onSelectTripRef.current((point as GlobePoint).tripSlug))
+      .onPointHover((point) => {
+        // Pointer cursor on hover -- the only other affordance a flat 2D
+        // marker on a 3D surface has for "this is clickable."
+        container.style.cursor = point ? "pointer" : "grab";
+      })
       .arcsData(arcs)
       .arcColor(() => ARC_COLOR)
       .arcStroke(0.4)
@@ -142,7 +150,8 @@ export default function TravelGlobe({
   return (
     <div
       ref={containerRef}
-      className="mx-auto aspect-square w-full max-w-3xl overflow-hidden rounded-[2rem]"
+      // max-w-6xl (72rem) = 1.5x the previous max-w-3xl (48rem), per direct request.
+      className="mx-auto aspect-square w-full max-w-6xl overflow-hidden rounded-[2rem]"
     />
   );
 }

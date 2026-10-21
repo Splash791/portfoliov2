@@ -18,7 +18,10 @@ function Card({
   return (
     <div
       className={`glass relative rounded-[1.75rem] px-6 py-5 ${
-        entry.featured ? "sm:px-8 sm:py-7" : ""
+        // Bento sizing (same pattern as Projects): featured spans both
+        // columns and gets more padding, but stays wherever it falls in
+        // chronological order instead of being pulled out to always lead.
+        entry.featured ? "sm:col-span-2 sm:px-8 sm:py-7" : ""
       }`}
     >
       <div className="flex flex-wrap items-baseline justify-between gap-2">
@@ -81,25 +84,20 @@ function Card({
 
 export default function Experience() {
   const reducedMotion = useReducedMotionSafe();
-  const featured = experience.find((entry) => entry.featured);
-  const rest = experience.filter((entry) => !entry.featured);
 
   return (
     <section id="experience" className="relative mx-auto w-full max-w-5xl px-6 py-24 sm:py-32">
       <h2 className="mb-10 font-mono text-xs uppercase tracking-wide text-ink/70">Experience</h2>
 
-      {/* No timeline/connecting-line metaphor -- the featured entry stands
-          alone up top (full-width, expanded by default), the rest sit in
-          a grid below it. Single column on mobile, two columns from `sm:`
-          up -- a deliberate breakpoint-driven layout, not a shrunk copy. */}
-      <div className="flex flex-col gap-6">
-        {featured && <Card entry={featured} reducedMotion={reducedMotion} />}
-
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-          {rest.map((entry) => (
-            <Card key={`${entry.org}-${entry.role}`} entry={entry} reducedMotion={reducedMotion} />
-          ))}
-        </div>
+      {/* One chronological grid, not a "featured leads, rest follow" split
+          -- Deloitte keeps its bigger/expanded-by-default treatment via
+          `entry.featured`'s sm:col-span-2 styling in Card, but renders in
+          its actual chronological position (currently last), not pulled
+          to the front. Single column on mobile, two from `sm:` up. */}
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+        {experience.map((entry) => (
+          <Card key={`${entry.org}-${entry.role}`} entry={entry} reducedMotion={reducedMotion} />
+        ))}
       </div>
     </section>
   );

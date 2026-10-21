@@ -9,7 +9,7 @@ import TripGallery from "./TripGallery";
 
 function GlobeFallback({ reason }: { reason: string }) {
   return (
-    <div className="glass mx-auto flex aspect-square w-full max-w-3xl items-center justify-center rounded-[2rem]">
+    <div className="glass mx-auto flex aspect-square w-full max-w-6xl items-center justify-center rounded-[2rem]">
       <p className="font-mono text-xs text-ink/65">{reason}</p>
     </div>
   );
@@ -61,7 +61,11 @@ export default function Travel() {
     <section
       id="travel"
       ref={sectionRef}
-      className="relative mx-auto w-full max-w-5xl px-6 py-24 sm:py-32"
+      // Wider than the other sections' max-w-5xl specifically so the
+      // globe's own max-w-6xl (1.5x its previous size, per direct request)
+      // isn't clamped back down by this wrapper -- a circular globe needs
+      // more horizontal room than a text column does.
+      className="relative mx-auto w-full max-w-7xl px-6 py-24 sm:py-32"
     >
       <h2 className="mb-10 font-mono text-xs uppercase tracking-wide text-ink/70">Travel</h2>
 
