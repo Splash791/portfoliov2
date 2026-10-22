@@ -12,7 +12,9 @@ function Card({
   entry: ExperienceEntry;
   reducedMotion: boolean;
 }) {
-  const [expanded, setExpanded] = useState(!!entry.featured);
+  // All cards start collapsed, including the featured one -- per direct
+  // request, Deloitte no longer defaults to expanded on every load.
+  const [expanded, setExpanded] = useState(false);
   const isPlaceholderOrg = entry.org === "Leadership Role (TBD)";
 
   return (
@@ -93,10 +95,11 @@ export default function Experience() {
       <h2 className="mb-10 font-mono text-xs uppercase tracking-wide text-ink/70">Experience</h2>
 
       {/* One chronological grid, not a "featured leads, rest follow" split
-          -- Deloitte keeps its bigger/expanded-by-default treatment via
-          `entry.featured`'s sm:col-span-2 styling in Card, but renders in
-          its actual chronological position (currently last), not pulled
-          to the front. Single column on mobile, two from `sm:` up. */}
+          -- Deloitte keeps its larger bento-tile sizing via `entry.featured`'s
+          sm:col-span-2 styling in Card (though no longer an expanded-by-
+          default state), and renders in its actual chronological position
+          (currently last), not pulled to the front. Single column on
+          mobile, two from `sm:` up. */}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         {experience.map((entry) => (
           <Card key={`${entry.org}-${entry.role}`} entry={entry} reducedMotion={reducedMotion} />

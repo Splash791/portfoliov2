@@ -10,6 +10,7 @@ const MODE_LABEL: Record<Trip["routes"][number]["mode"], string> = {
   flight: "Flight",
   bus: "Bus",
   train: "Train",
+  boat: "Boat",
 };
 
 export default function TripGallery({

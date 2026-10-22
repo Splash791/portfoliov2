@@ -11,7 +11,7 @@ function GlobeFallback({ reason }: { reason: string }) {
   // Matches TravelGlobe.tsx's own sizing exactly, so swapping between the
   // fallback and the real globe never changes the section's layout size.
   return (
-    <div className="glass mx-auto flex aspect-square w-[min(91.2rem,112dvh,100%)] items-center justify-center rounded-[2rem]">
+    <div className="glass mx-auto flex aspect-square w-[min(calc(100dvh-22rem),100%)] items-center justify-center rounded-[2rem] sm:w-[min(calc(100dvh-24rem),100%)]">
       <p className="font-mono text-xs text-ink/65">{reason}</p>
     </div>
   );

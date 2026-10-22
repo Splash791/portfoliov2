@@ -1,6 +1,6 @@
 // Trip list replaced per direct instruction with the real destinations
-// given in chat: Japan, New Zealand, Hong Kong + Singapore, Juneau
-// (Alaska), Paris, Rome, and Vietnam. Where only a country was named (Japan,
+// given in chat: Japan, New Zealand, Hong Kong + Singapore, an Alaska
+// cruise, Paris, Rome, and Vietnam. Where only a country was named (Japan,
 // New Zealand, Vietnam), the stop below uses that country's capital/largest
 // city as a representative map point since no specific itinerary was
 // given -- replace with the real stops. `status` (past vs. upcoming) was
@@ -12,7 +12,7 @@ export type Trip = {
   title: string;
   status: "past" | "upcoming";
   stops: { name: string; lat: number; lng: number }[];
-  routes: { from: string; to: string; mode: "flight" | "bus" | "train" }[];
+  routes: { from: string; to: string; mode: "flight" | "bus" | "train" | "boat" }[];
   photos?: { src: string; alt: string; caption?: string }[];
   notes?: string;
 };
@@ -39,7 +39,7 @@ export const TRIP_PIN_COLORS = [
 export const trips: Trip[] = [
   {
     slug: "japan",
-    title: "Japan",
+    title: "Japan 2026",
     status: "past",
     stops: [
       // TODO: Tokyo used as a placeholder representative point for "Japan" —
@@ -51,7 +51,7 @@ export const trips: Trip[] = [
   },
   {
     slug: "new-zealand",
-    title: "New Zealand",
+    title: "New Zealand 2026",
     status: "past",
     stops: [
       // TODO: Auckland used as a placeholder representative point for
@@ -63,7 +63,7 @@ export const trips: Trip[] = [
   },
   {
     slug: "hong-kong-singapore",
-    title: "Hong Kong + Singapore",
+    title: "Hong Kong + Singapore - 2026",
     status: "past",
     stops: [
       { name: "Hong Kong", lat: 22.3193, lng: 114.1694 },
@@ -77,9 +77,10 @@ export const trips: Trip[] = [
     // TODO: notes/photos not provided yet.
   },
   {
-    slug: "juneau-alaska",
-    title: "Juneau, Alaska",
+    slug: "alaska",
+    title: "Alaska 2026",
     status: "past",
+    // Simplified to a single pin per direct request -- no route/arc.
     stops: [{ name: "Juneau, Alaska", lat: 58.3019, lng: -134.4197 }],
     routes: [],
     // TODO: notes/photos not provided yet.
@@ -104,11 +105,7 @@ export const trips: Trip[] = [
     slug: "vietnam",
     title: "Vietnam",
     status: "past",
-    stops: [
-      // TODO: Hanoi used as a placeholder representative point for
-      // "Vietnam" — no specific city/itinerary was given.
-      { name: "Hanoi, Vietnam", lat: 21.0278, lng: 105.8342 },
-    ],
+    stops: [{ name: "Ho Chi Minh City, Vietnam", lat: 10.8231, lng: 106.6297 }],
     routes: [],
     // TODO: notes/photos not provided yet.
   },

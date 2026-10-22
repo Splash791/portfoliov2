@@ -3,15 +3,11 @@ import About from "@/components/about/About";
 import Experience from "@/components/experience/Experience";
 import Projects from "@/components/projects/Projects";
 import Travel from "@/components/travel/Travel";
-import Writing from "@/components/writing/Writing";
 import Connect from "@/components/connect/Connect";
 import Footer from "@/components/ui/Footer";
 import SnapSection from "@/components/ui/SnapSection";
-import { getAllPosts } from "@/lib/blog";
 
 export default function Home() {
-  const posts = getAllPosts();
-
   return (
     <main id="top" className="flex flex-col">
       <SnapSection>
@@ -32,10 +28,6 @@ export default function Home() {
 
       <SnapSection>
         <Travel />
-      </SnapSection>
-
-      <SnapSection>
-        <Writing posts={posts} />
       </SnapSection>
 
       <SnapSection>
