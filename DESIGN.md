@@ -82,10 +82,10 @@ color underneath, frosted glass floating above it. The color layer (tan,
 khaki, cream, umber, espresso mesh blobs — an earth-tone camo family,
 matched against a BAPE camo reference image per direct request; it
 replaced an earlier, more colorful earth-tone set, which itself replaced
-the original bright sunset set) started as a Hero-only effect but now
-continues, section by section, through the rest of the page rather than
-stopping after the first viewport (see the Blob Rhythm Rule below) — it's
-where the "personal/warm" half of the brand lives; the glass layer (one
+the original bright sunset set) is a Hero-only effect (see the Blob
+Rhythm Rule below) after a round of experiments that briefly tried it
+page-wide — it's where the "personal/warm" half of the brand lives;
+the glass layer (one
 repeated `.glass` treatment — blur,
 hairline translucent border, soft ambient shadow) is where the
 "technical/precise" half lives, because every panel gets the exact same
@@ -181,7 +181,7 @@ Hybrid, but deliberately narrow: color and blur create depth (blurred mesh blobs
 **The One Glass Shadow Rule.** There is exactly one elevation treatment. Don't invent a second shadow value for an individual component, no matter how "special" it feels.
 **The Glass Budget Rule.** Cap how many stacked `.glass`/`backdrop-filter` surfaces appear on screen at once — it isn't free, and body text needs enough opacity behind it to stay contrast-accessible over the colorful blobs underneath.
 
-**The Blob Rhythm Rule.** The mesh-blob backdrop (via the shared `SectionBlobs` component) alternates on and off down the page rather than running continuously or staying Hero-only: **Hero** (blobs) → **About** (plain paper) → **Experience** (blobs) → **Projects** (plain paper) → **Travel** (plain paper — the globe itself is already that section's visual centerpiece, so it doesn't also get blobs). Each blobbed section uses its own position/color/count config, not a copy-pasted repeat of Hero's — Hero gets the full five-blob treatment (its "peak" moment); other blobbed sections use a quieter 3-blob set so the backdrop stays behind the glass cards' content rather than competing with it. A new section being added to the page should deliberately choose blobs-or-plain as part of that rhythm, not default to whichever is easiest.
+**The Blob Rhythm Rule.** Only **Hero** carries the mesh-blob backdrop (via the shared `SectionBlobs` component, which also animates an organic shape-morph, rotation, and a seeded per-blob drift path so blobs don't move in lockstep); every other section — **About**, **Experience**, **Projects**, **Travel** — is plain paper. This is the settled state after several rounds of experimentation: Hero-only originally, briefly carried into every section, pulled back to just About, briefly also copied verbatim onto Projects, then all of it pulled back to Hero-only. Hero's own `<section>` has no `max-w` (always full-width), so it never needed the full-bleed outer/inner-wrapper split the other sections used while they carried blobs. A new section being added to the page defaults to plain paper, not blobs — Hero is the one deliberate exception, not the default to extend from.
 
 ## Shapes
 

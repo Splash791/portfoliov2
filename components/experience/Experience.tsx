@@ -4,28 +4,6 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { experience, type Experience as ExperienceEntry } from "@/data/experience";
 import { durations, easing, useReducedMotionSafe } from "@/lib/motion";
-import SectionBlobs, { type BlobConfig } from "@/components/ui/SectionBlobs";
-import SectionEdgeFade from "@/components/ui/SectionEdgeFade";
-
-// A different three-tone slice of the same earth family than Hero's
-// (khaki/cream/umber instead of tan/white/khaki/cream), at different
-// positions -- continues the blob pattern per direct request without
-// reading as a copy-pasted repeat of the hero. Fewer/smaller blobs than
-// Hero's five: this section is text-dense (cards, timestamps, expand
-// controls), so the backdrop stays a quieter presence behind the glass
-// cards rather than competing with them.
-//
-// Positioned off-axis (not mirrored/evenly spaced) and pushed further
-// past the edges than Hero's set -- per direct request ("bleed out or
-// fade out as it reaches the edges randomly"), these read as organic
-// bleed rather than a centered, contained trio. Sizes capped with
-// `min(vmax,rem)` for the same reason as Hero's (see Hero.tsx).
-const BLOBS: BlobConfig[] = [
-  { color: "bg-amber", className: "right-[-22%] top-[-18%] h-[min(40vmax,25rem)] w-[min(40vmax,25rem)]", duration: 30 },
-  { color: "bg-peach", className: "left-[-18%] bottom-[18%] h-[min(32vmax,20rem)] w-[min(32vmax,20rem)]", duration: 25 },
-  { color: "bg-rose", className: "right-[6%] bottom-[-26%] h-[min(28vmax,17rem)] w-[min(28vmax,17rem)]", duration: 34 },
-  { color: "bg-sage", className: "left-[22%] top-[-14%] h-[min(20vmax,12rem)] w-[min(20vmax,12rem)]", duration: 20 },
-];
 
 function Card({
   entry,
@@ -115,34 +93,20 @@ export default function Experience() {
   return (
     <section
       id="experience"
-      // Full-width/`min-h-dvh`, not the old `max-w-5xl` on this element
-      // itself: that had confined `SectionBlobs`' `absolute inset-0` layer
-      // to the same centered 1024px column as the content, so the blobs
-      // never reached the real viewport edges, and the section's own
-      // height could fall short of SnapSection's `min-h-dvh` wrapper and
-      // expose plain paper above/below (same fix Hero already has, see
-      // Hero.tsx). The width constraint now lives on the inner content
-      // wrapper below instead.
-      className="relative flex min-h-dvh w-full flex-col justify-center overflow-hidden py-24 sm:py-32"
+      className="relative mx-auto w-full max-w-5xl overflow-hidden px-6 py-24 sm:py-32"
     >
-      <SectionBlobs blobs={BLOBS} reducedMotion={!!reducedMotion} />
-      <SectionEdgeFade edge="top" />
-      <SectionEdgeFade edge="bottom" />
+      <h2 className="mb-10 font-mono text-xs uppercase tracking-wide text-ink/70">Experience</h2>
 
-      <div className="relative z-10 mx-auto w-full max-w-5xl px-6">
-        <h2 className="mb-10 font-mono text-xs uppercase tracking-wide text-ink/70">Experience</h2>
-
-        {/* One chronological grid, not a "featured leads, rest follow" split
-            -- Deloitte keeps its larger bento-tile sizing via `entry.featured`'s
-            sm:col-span-2 styling in Card (though no longer an expanded-by-
-            default state), and renders in its actual chronological position
-            (currently last), not pulled to the front. Single column on
-            mobile, two from `sm:` up. */}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-          {experience.map((entry) => (
-            <Card key={`${entry.org}-${entry.role}`} entry={entry} reducedMotion={reducedMotion} />
-          ))}
-        </div>
+      {/* One chronological grid, not a "featured leads, rest follow" split
+          -- Deloitte keeps its larger bento-tile sizing via `entry.featured`'s
+          sm:col-span-2 styling in Card (though no longer an expanded-by-
+          default state), and renders in its actual chronological position
+          (currently last), not pulled to the front. Single column on
+          mobile, two from `sm:` up. */}
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+        {experience.map((entry) => (
+          <Card key={`${entry.org}-${entry.role}`} entry={entry} reducedMotion={reducedMotion} />
+        ))}
       </div>
     </section>
   );

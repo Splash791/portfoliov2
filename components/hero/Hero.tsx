@@ -60,18 +60,15 @@ export default function Hero() {
       // `min-h-dvh`, not a shorter 90vh: Hero sits inside SnapSection's own
       // `min-h-dvh flex justify-center` wrapper, so a shorter inner section
       // left a gap above/below where the wrapper's extra height showed
-      // through as plain paper background instead of the blob gradient --
-      // matching this section's height to its wrapper's closes that gap,
-      // so the blobs cover the full first viewport edge-to-edge.
+      // through as plain paper background -- matching this section's
+      // height to its wrapper's closes that gap.
       className="relative flex min-h-dvh w-full items-center justify-center overflow-hidden px-6 py-16"
     >
       <SectionBlobs blobs={BLOBS} reducedMotion={!!reducedMotion} />
 
       {/* Static fade into the next (plain-paper) section -- not scroll- or
           motion-driven, so it needs no reduced-motion gate. Sits above the
-          blobs (-z-10) but below the glass hero card (z-10) so scrolling
-          from the now-full-bleed Hero straight into About's flat background
-          reads as a soft bridge instead of a hard color cut. */}
+          blobs (-z-10) but below the glass hero card (z-10). */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-32 bg-gradient-to-b from-transparent to-paper sm:h-48"
