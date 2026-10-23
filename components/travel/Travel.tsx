@@ -69,7 +69,9 @@ export default function Travel() {
       // legend -- fits one viewport instead of needing a scroll inside it.
       className="relative mx-auto w-full max-w-7xl px-6 py-24 sm:py-32"
     >
-      <h2 className="mb-6 font-mono text-xs uppercase tracking-wide text-ink/70">Travel</h2>
+      <h2 data-monkey-anchor="travel" className="mb-6 font-mono text-xs uppercase tracking-wide text-ink/70">
+        Travel
+      </h2>
 
       {!webglAvailable ? (
         <GlobeFallback reason="3D globe isn't available on this device." />

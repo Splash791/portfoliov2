@@ -1,11 +1,12 @@
 "use client";
 
-import { motion, useMotionValue, useTransform } from "framer-motion";
+import { AnimatePresence, motion, useMotionValue, useTransform } from "framer-motion";
 import { useEffect } from "react";
 import Image from "next/image";
 import { durations, easing, useReducedMotionSafe } from "@/lib/motion";
 import Magnetic from "@/components/ui/Magnetic";
 import SectionBlobs, { type BlobConfig } from "@/components/ui/SectionBlobs";
+import { useMonkey } from "@/components/monkey/MonkeyContext";
 
 const NAME = "Tyler Quach";
 const ROLE = "CS @ Oregon State University";
@@ -25,10 +26,23 @@ const BLOBS: BlobConfig[] = [
 
 export default function Hero() {
   const reducedMotion = useReducedMotionSafe();
+  const { active: monkeyActive, activate: activateMonkey, triggerSurprise } = useMonkey();
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const rotateX = useTransform(mouseY, [-0.5, 0.5], [3, -3]);
   const rotateY = useTransform(mouseX, [-0.5, 0.5], [-3, 3]);
+
+  // First click only starts the monkey sequence (handled by MonkeyContext
+  // + Monkey.tsx) instead of navigating -- the "View Projects" jump-to-
+  // section affordance is intentionally gone from this button once the
+  // monkey takes over; every click after the first re-triggers a surprise.
+  function handleCtaClick() {
+    if (!monkeyActive) {
+      activateMonkey();
+    } else {
+      triggerSurprise();
+    }
+  }
 
   useEffect(() => {
     // No listener is attached at all under reduced motion — the headline
@@ -92,7 +106,10 @@ export default function Hero() {
         className="glass relative z-10 flex w-full max-w-6xl flex-col items-center gap-10 rounded-[2rem] px-6 py-10 text-center sm:px-12 sm:py-14 lg:flex-row lg:items-center lg:justify-between lg:gap-12 lg:text-left"
       >
         <div className="flex flex-col items-center gap-6 lg:items-start">
-          <h1 className="font-serif text-5xl leading-[0.95] text-ink sm:text-7xl lg:text-8xl">
+          <h1
+            data-monkey-anchor="hero"
+            className="font-serif text-5xl leading-[0.95] text-ink sm:text-7xl lg:text-8xl"
+          >
             <motion.span
               aria-hidden="true"
               style={reducedMotion ? undefined : { rotateX, rotateY, transformPerspective: 600 }}
@@ -137,12 +154,30 @@ export default function Hero() {
             className="mt-2 flex flex-wrap items-center justify-center gap-3 lg:justify-start"
           >
             <Magnetic>
-              <a
-                href="#projects"
-                className="rounded-full bg-ink px-6 py-3 font-mono text-sm text-[var(--color-paper)] transition-transform hover:scale-[1.03]"
+              <button
+                type="button"
+                data-monkey-trigger
+                onClick={handleCtaClick}
+                aria-label={monkeyActive ? "Give me a surprise" : "Give me a surprise"}
+                className="relative overflow-hidden rounded-full bg-ink px-6 py-3 font-mono text-sm text-[var(--color-paper)] transition-transform hover:scale-[1.03]"
               >
-                View Projects
-              </a>
+                {/* AnimatePresence swap, not a plain text change -- the
+                    button keeps its exact position/size/styling (per
+                    direct spec) while the label itself does a quick
+                    crossfade when it changes. */}
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.span
+                    key={monkeyActive ? "surprise" : "view"}
+                    initial={{ opacity: 0, y: reducedMotion ? 0 : 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: reducedMotion ? 0 : -6 }}
+                    transition={{ duration: reducedMotion ? 0 : durations.fast, ease: easing.out }}
+                    className="inline-block"
+                  >
+                    {monkeyActive ? "Give me a surprise" : "Give me a surprise"}
+                  </motion.span>
+                </AnimatePresence>
+              </button>
             </Magnetic>
             <Magnetic>
               <a

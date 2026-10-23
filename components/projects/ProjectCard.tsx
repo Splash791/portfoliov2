@@ -41,6 +41,7 @@ export default function ProjectCard({
     <motion.button
       ref={triggerRef}
       type="button"
+      data-monkey-anchor="project-card"
       // Only one element may own this layoutId at a time (section 6's
       // shared-element morph). While the modal is open it is the sole
       // owner; the card gives it up so Framer animates card -> modal

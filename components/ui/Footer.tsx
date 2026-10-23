@@ -13,6 +13,7 @@ export default function Footer() {
           © {new Date().getFullYear()} Tyler Quach
         </p>
         <a
+          data-monkey-anchor="footer"
           href="https://www.linkedin.com/in/tyler-quach-/"
           target="_blank"
           rel="noreferrer"

@@ -57,7 +57,7 @@ export default function Projects() {
       id="projects"
       className="relative mx-auto w-full max-w-5xl px-6 py-24 sm:py-32"
     >
-      <h2 className="mb-10 font-mono text-xs uppercase tracking-wide text-ink/70">
+      <h2 data-monkey-anchor="projects" className="mb-10 font-mono text-xs uppercase tracking-wide text-ink/70">
         Projects
       </h2>
 

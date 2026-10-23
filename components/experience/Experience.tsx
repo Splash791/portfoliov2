@@ -19,6 +19,7 @@ function Card({
 
   return (
     <div
+      data-monkey-anchor="experience-card"
       className={`glass relative rounded-[1.75rem] px-6 py-5 ${
         // Bento sizing (same pattern as Projects): featured spans both
         // columns and gets more padding, but stays wherever it falls in
@@ -95,7 +96,9 @@ export default function Experience() {
       id="experience"
       className="relative mx-auto w-full max-w-5xl overflow-hidden px-6 py-24 sm:py-32"
     >
-      <h2 className="mb-10 font-mono text-xs uppercase tracking-wide text-ink/70">Experience</h2>
+      <h2 data-monkey-anchor="experience" className="mb-10 font-mono text-xs uppercase tracking-wide text-ink/70">
+        Experience
+      </h2>
 
       {/* One chronological grid, not a "featured leads, rest follow" split
           -- Deloitte keeps its larger bento-tile sizing via `entry.featured`'s

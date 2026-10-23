@@ -17,7 +17,9 @@ export default function About() {
     <section id="about" className="relative mx-auto w-full max-w-5xl px-6 py-24 sm:py-32">
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
         <div className="flex flex-col gap-6">
-          <h2 className="font-mono text-xs uppercase tracking-wide text-ink/70">About</h2>
+          <h2 data-monkey-anchor="about" className="font-mono text-xs uppercase tracking-wide text-ink/70">
+            About
+          </h2>
 
           {/* Plain, fully-opaque text -- no word-by-word scroll-tied fade.
               That effect (opacity ramping per word as it scrolled into
