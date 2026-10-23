@@ -66,7 +66,7 @@ export default function PhotoCarousel({
         style={{ borderStyle: "dashed" }}
         className={`glass flex w-full flex-col items-center justify-center gap-2 ${rounded} ${aspectClassName}`}
       >
-        <span className="font-mono text-[0.65rem] text-ink/65">{emptyLabel}</span>
+        <span className="font-mono text-xs text-ink/65">{emptyLabel}</span>
       </div>
     );
   }

@@ -1,19 +1,22 @@
 "use client";
 
-import { motion, useMotionValue, useTransform } from "framer-motion";
+import { AnimatePresence, motion, useMotionValue, useTransform } from "framer-motion";
 import { useEffect } from "react";
+import Image from "next/image";
 import { durations, easing, useReducedMotionSafe } from "@/lib/motion";
 import Magnetic from "@/components/ui/Magnetic";
+import SectionBlobs, { type BlobConfig } from "@/components/ui/SectionBlobs";
+import { useMonkey } from "@/components/monkey/MonkeyContext";
 
 const NAME = "Tyler Quach";
 const ROLE = "CS @ Oregon State University";
 
-// Warm sunset + white only -- user feedback was the violet/rose mix read
-// as "floral" rather than sunset. Coral/amber/peach are the warm palette's
-// own sunset-adjacent tones; white is Tailwind's own (not a custom warm-
-// palette token, since the palette has no white/light entry) for a bright
-// haze rather than another saturated hue.
-const BLOBS = [
+// Earth tones + white only -- the original sunset palette's sage/rust mix
+// (then violet/rose) read as "floral" per direct feedback, so the hero
+// stays to the warmest three (terracotta/ochre/sand) plus a bright haze.
+// White is Tailwind's own (not a custom palette token, since the palette
+// has no white/light entry) for that haze rather than another saturated hue.
+const BLOBS: BlobConfig[] = [
   { color: "bg-coral", className: "left-[-10%] top-[-15%] h-[55vmax] w-[55vmax]", duration: 26 },
   { color: "bg-white", className: "right-[-18%] top-[5%] h-[45vmax] w-[45vmax]", duration: 32 },
   { color: "bg-amber", className: "left-[5%] bottom-[-25%] h-[42vmax] w-[42vmax]", duration: 22 },
@@ -21,47 +24,25 @@ const BLOBS = [
   { color: "bg-peach", className: "left-[38%] top-[25%] h-[28vmax] w-[28vmax]", duration: 24 },
 ];
 
-function Blobs({ reducedMotion }: { reducedMotion: boolean }) {
-  // Under reduced motion these render as static shapes (no `animate` loop at
-  // all) rather than an animated one paused mid-frame — this is the gate,
-  // not a duration tweak.
-  if (reducedMotion) {
-    return (
-      <div aria-hidden className="absolute inset-0 -z-10 overflow-hidden">
-        {BLOBS.map((blob, i) => (
-          <div
-            key={i}
-            className={`absolute rounded-full opacity-50 blur-[90px] ${blob.color} ${blob.className}`}
-          />
-        ))}
-      </div>
-    );
-  }
-
-  return (
-    <div aria-hidden className="absolute inset-0 -z-10 overflow-hidden">
-      {BLOBS.map((blob, i) => (
-        <motion.div
-          key={i}
-          className={`absolute rounded-full opacity-50 blur-[90px] ${blob.color} ${blob.className}`}
-          animate={{
-            x: [0, 40, -24, 0],
-            y: [0, -32, 20, 0],
-            scale: [1, 1.08, 0.95, 1],
-          }}
-          transition={{ duration: blob.duration, repeat: Infinity, ease: "easeInOut" }}
-        />
-      ))}
-    </div>
-  );
-}
-
 export default function Hero() {
   const reducedMotion = useReducedMotionSafe();
+  const { active: monkeyActive, activate: activateMonkey, triggerSurprise } = useMonkey();
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const rotateX = useTransform(mouseY, [-0.5, 0.5], [3, -3]);
   const rotateY = useTransform(mouseX, [-0.5, 0.5], [-3, 3]);
+
+  // First click only starts the monkey sequence (handled by MonkeyContext
+  // + Monkey.tsx) instead of navigating -- the "View Projects" jump-to-
+  // section affordance is intentionally gone from this button once the
+  // monkey takes over; every click after the first re-triggers a surprise.
+  function handleCtaClick() {
+    if (!monkeyActive) {
+      activateMonkey();
+    } else {
+      triggerSurprise();
+    }
+  }
 
   useEffect(() => {
     // No listener is attached at all under reduced motion — the headline
@@ -90,9 +71,22 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative flex min-h-[90vh] w-full items-center justify-center overflow-hidden px-6 py-16"
+      // `min-h-dvh`, not a shorter 90vh: Hero sits inside SnapSection's own
+      // `min-h-dvh flex justify-center` wrapper, so a shorter inner section
+      // left a gap above/below where the wrapper's extra height showed
+      // through as plain paper background -- matching this section's
+      // height to its wrapper's closes that gap.
+      className="relative flex min-h-dvh w-full items-center justify-center overflow-hidden px-6 py-16"
     >
-      <Blobs reducedMotion={!!reducedMotion} />
+      <SectionBlobs blobs={BLOBS} reducedMotion={!!reducedMotion} />
+
+      {/* Static fade into the next (plain-paper) section -- not scroll- or
+          motion-driven, so it needs no reduced-motion gate. Sits above the
+          blobs (-z-10) but below the glass hero card (z-10). */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-32 bg-gradient-to-b from-transparent to-paper sm:h-48"
+      />
 
       <motion.div
         // `reducedMotion` is hydration-safe (always `false` on the very
@@ -112,7 +106,10 @@ export default function Hero() {
         className="glass relative z-10 flex w-full max-w-6xl flex-col items-center gap-10 rounded-[2rem] px-6 py-10 text-center sm:px-12 sm:py-14 lg:flex-row lg:items-center lg:justify-between lg:gap-12 lg:text-left"
       >
         <div className="flex flex-col items-center gap-6 lg:items-start">
-          <h1 className="font-serif text-5xl leading-[0.95] text-ink sm:text-7xl lg:text-8xl">
+          <h1
+            data-monkey-anchor="hero"
+            className="font-serif text-5xl leading-[0.95] text-ink sm:text-7xl lg:text-8xl"
+          >
             <motion.span
               aria-hidden="true"
               style={reducedMotion ? undefined : { rotateX, rotateY, transformPerspective: 600 }}
@@ -157,18 +154,36 @@ export default function Hero() {
             className="mt-2 flex flex-wrap items-center justify-center gap-3 lg:justify-start"
           >
             <Magnetic>
-              <a
-                href="#projects"
-                className="rounded-full bg-ink px-6 py-3 font-mono text-sm text-[var(--color-paper)] transition-transform hover:scale-[1.03]"
+              <button
+                type="button"
+                data-monkey-trigger
+                onClick={handleCtaClick}
+                aria-label={monkeyActive ? "Give me a surprise" : "Give me a surprise"}
+                className="relative overflow-hidden rounded-full bg-ink px-6 py-3 font-mono text-sm text-[var(--color-paper)] transition-transform hover:scale-[1.03]"
               >
-                View Projects
-              </a>
+                {/* AnimatePresence swap, not a plain text change -- the
+                    button keeps its exact position/size/styling (per
+                    direct spec) while the label itself does a quick
+                    crossfade when it changes. */}
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.span
+                    key={monkeyActive ? "surprise" : "view"}
+                    initial={{ opacity: 0, y: reducedMotion ? 0 : 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: reducedMotion ? 0 : -6 }}
+                    transition={{ duration: reducedMotion ? 0 : durations.fast, ease: easing.out }}
+                    className="inline-block"
+                  >
+                    {monkeyActive ? "Give me a surprise" : "Give me a surprise"}
+                  </motion.span>
+                </AnimatePresence>
+              </button>
             </Magnetic>
-            {/* TODO: no real LinkedIn URL was provided in the plan — replace href before launch. */}
             <Magnetic>
               <a
-                href="#"
-                data-placeholder="linkedin-url"
+                href="https://www.linkedin.com/in/tyler-quach-/"
+                target="_blank"
+                rel="noreferrer"
                 className="glass rounded-full px-6 py-3 font-mono text-sm text-ink transition-transform hover:scale-[1.03]"
               >
                 Connect on LinkedIn
@@ -177,18 +192,15 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        {/* TODO: no professional headshot available yet (section 11). */}
-        {/* `.glass`'s `border` shorthand would otherwise override a
-            `border-dashed` utility at equal specificity — set the dashed
-            style inline so it actually wins the cascade (same pattern as
-            About.tsx's photo placeholders). */}
-        <div
-          data-placeholder="headshot"
-          style={{ borderStyle: "dashed" }}
-          className="glass flex aspect-square w-64 shrink-0 flex-col items-center justify-center gap-3 rounded-[2rem] sm:w-80 lg:w-[26rem]"
-        >
-          <span className="font-serif text-6xl text-ink/75 lg:text-7xl">TQ</span>
-          <span className="font-mono text-xs text-ink/65 lg:text-sm">Headshot placeholder</span>
+        <div className="glass relative aspect-square w-64 shrink-0 overflow-hidden rounded-[2rem] sm:w-80 lg:w-[26rem]">
+          <Image
+            src="/portfoliov2-images/portfoliov2-hero.jpg"
+            alt="Tyler Quach"
+            fill
+            priority
+            sizes="(min-width: 1024px) 26rem, (min-width: 640px) 20rem, 16rem"
+            className="object-cover"
+          />
         </div>
       </motion.div>
     </section>

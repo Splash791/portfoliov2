@@ -14,12 +14,19 @@ polish on desktop and mobile; mobile is not a degraded fallback.
 Single source of truth: `app/globals.css` (`@theme` block) — this project
 uses Tailwind v4's CSS-first config, so there is **no `tailwind.config.ts`**.
 
-- `--color-base` `#f7f5f0` — off-white background, never pure white.
-- `--color-ink` `#1e1b4b` — cool ink/indigo accent for text and contrast.
-  ~14.7:1 contrast ratio against `--color-base` (WCAG AAA).
-- Warm palette: `--color-coral` `#ff6f59`, `--color-peach` `#ffb88c`,
-  `--color-amber` `#f6ae2d`, `--color-rose` `#e8527a`, `--color-violet` `#8c7ae6`.
-  **TODO:** placeholder hex values pending review (plan section 12).
+- `--color-paper` `#f7f5f0` — off-white background, never pure white.
+- `--color-ink` `#141210` — black text/contrast (was a cool indigo
+  `#1e1b4b`, changed to plain black per direct request). ~17.15:1
+  contrast ratio against `--color-paper` (WCAG AAA).
+- Earth-tone **camo** palette, matched against a BAPE camo reference image
+  (replacing an earlier, more colorful earth-tone set, which itself
+  replaced the original bright sunset set): `--color-coral` `#8c6b42`
+  (tan), `--color-peach` `#ddd0b0` (cream), `--color-amber` `#b89968`
+  (khaki), `--color-rose` `#5e4830` (umber), `--color-sage` `#3a2c1e`
+  (espresso — the one renamed token; was `--color-violet`, since no earth
+  palette here has had a violet in it). Token names otherwise kept as-is
+  to avoid renaming every `bg-coral`/`from-amber` utility across the
+  codebase each time the hex values moved.
 - Glass surface: `--color-glass-bg`, `--color-glass-border`, `--blur-glass`,
   applied via the `.glass` utility class in `globals.css`. Cap how many
   stacked `.glass`/`backdrop-filter` surfaces appear on screen at once —
@@ -75,6 +82,15 @@ generic in shape but not in specific claims.
 
 ## Known gotchas
 
+- **No Connect section, no nav, no Writing/blog preview on the homepage.**
+  `components/connect/Connect.tsx`, a nav component, and
+  `components/writing/Writing.tsx` all exist and work, but `app/page.tsx`
+  doesn't render any of them — each was built, then explicitly removed
+  from the page composition per direct request (Connect specifically was
+  removed, later re-added with a real LinkedIn link, then removed again).
+  Footer's and Hero's own LinkedIn links/CTAs stay regardless of whether
+  the Connect block is in or out. Don't reintroduce any of these to
+  `app/page.tsx` without being asked.
 - **Travel is globe-only.** The MapLibre flat-map view was removed per a
   later user request ("i dont want a map. just globe") — `maplibre-gl` is
   no longer a dependency, `components/travel/TravelMap.tsx` no longer
@@ -91,11 +107,13 @@ generic in shape but not in specific claims.
   `THREE.MeshStandardMaterial` in `components/travel/TravelGlobe.tsx`
   (built on `globe.gl`, not raw react-three-fiber — `@react-three/fiber`/
   `@react-three/drei` were removed as part of that swap).
-- **Muted text opacity tiers:** `text-ink/40`, `/50`, `/60` all fail WCAG AA
-  contrast (2.4:1, 3.2:1, 4.2:1) against `--color-base` — computed and
-  confirmed via Lighthouse during the phase 8 QA pass. Use `/65` minimum
-  for large text, `/70`+ for anything else; `/75`+ reads as "least muted."
-  Don't reintroduce `/40`–`/60` for body/label text.
+- **Muted text opacity tiers:** `text-ink/40` and `/50` fail WCAG AA
+  contrast (2.58:1, 3.43:1) against `--color-paper`; `/60` (4.73:1) only
+  barely clears it — originally computed against the indigo ink used
+  through most of the build, re-verified (not just assumed) after ink
+  changed to plain black. Use `/65` minimum for large text, `/70`+ for
+  anything else; `/75`+ reads as "least muted." Don't reintroduce
+  `/40`–`/60` for body/label text.
 
 ## Notes on tooling
 

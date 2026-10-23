@@ -45,13 +45,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      // `snap-mandatory`: always resolves to a section boundary (never
-      // stuck between). Only feels right with Lenis off on this route
-      // (see SmoothScroll.tsx) -- Lenis's JS wheel smoothing fighting
-      // mandatory snap is what made an earlier version feel like an
-      // abrupt full jump on every tick. Harmless on routes with no
-      // snap-start descendants (/blog, /blog/[slug]).
-      className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} h-full antialiased snap-y snap-mandatory`}
+      // Proximity snap (`snap-y` alone, not `-mandatory`): still settles on
+      // a section boundary once scroll naturally comes close to one, but a
+      // visitor scanning quickly can keep scrolling past a section instead
+      // of being forced to stop at every one -- `-mandatory` fought that
+      // directly (and PRODUCT.md is explicit that recruiters scan fast).
+      // Still only feels right with Lenis off on this route (see
+      // SmoothScroll.tsx); harmless on routes with no snap-start
+      // descendants (/blog, /blog/[slug]).
+      className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} h-full antialiased snap-y`}
     >
       <body className="min-h-full flex flex-col bg-paper text-ink font-sans">
         <SmoothScroll />

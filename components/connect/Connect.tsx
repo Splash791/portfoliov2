@@ -21,9 +21,6 @@ export default function Connect() {
         }
         className="glass flex flex-col items-center gap-4 rounded-[2rem] px-6 py-14 text-center sm:px-12"
       >
-        <p className="font-mono text-xs uppercase tracking-wide text-ink/70">
-          Connect
-        </p>
         <h2 className="font-serif text-3xl text-ink sm:text-4xl">
           Let&apos;s connect
         </h2>
@@ -33,11 +30,11 @@ export default function Connect() {
         </p>
 
         <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
-          {/* TODO: no real LinkedIn URL was provided in the plan — replace href before launch. */}
           <Magnetic>
             <a
-              href="#"
-              data-placeholder="linkedin-url"
+              href="https://www.linkedin.com/in/tyler-quach-/"
+              target="_blank"
+              rel="noreferrer"
               className="rounded-full bg-ink px-6 py-3 font-mono text-sm text-[var(--color-paper)] transition-transform hover:scale-[1.03]"
             >
               LinkedIn

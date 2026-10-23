@@ -44,5 +44,15 @@ export default function SmoothScroll() {
 
   if (!pointerFine || reducedMotion || hasSnapSections) return null;
 
-  return <ReactLenis root options={{ lerp: 0.1, duration: 1.2 }} />;
+  // Keyed on `pathname`: without this, navigating client-side between two
+  // non-snap routes (e.g. a blog post back to /blog) keeps the same Lenis
+  // instance mounted across the route change, and Lenis caches the
+  // scrollable content height at init time -- it doesn't re-measure just
+  // because the DOM underneath it got shorter (or taller) after a client-
+  // side navigation. Reported live: after returning from a long blog post
+  // to the much shorter /blog index, the page stopped scrolling entirely,
+  // because Lenis was still intercepting scroll input against the old,
+  // taller measurement. Forcing a remount on every pathname change gives
+  // Lenis a fresh `resize()`-equivalent measurement of the new page.
+  return <ReactLenis key={pathname} root options={{ lerp: 0.1, duration: 1.2 }} />;
 }

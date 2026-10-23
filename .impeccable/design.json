@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-22T22:05:00Z",
+  "title": "Design System: Tyler Quach — Portfolio v2",
+  "extensions": {
+    "colorMeta": {
+      "tan": { "role": "primary", "displayName": "Tan", "canonical": "oklch(54% 0.07 60)", "tonalRamp": ["oklch(15% 0.07 60)", "oklch(26% 0.07 60)", "oklch(37% 0.07 60)", "oklch(49% 0.07 60)", "oklch(60% 0.07 60)", "oklch(71% 0.07 60)", "oklch(83% 0.07 60)", "oklch(95% 0.07 60)"] },
+      "espresso": { "role": "secondary", "displayName": "Espresso", "canonical": "oklch(24% 0.03 55)", "tonalRamp": ["oklch(15% 0.03 55)", "oklch(26% 0.03 55)", "oklch(37% 0.03 55)", "oklch(49% 0.03 55)", "oklch(60% 0.03 55)", "oklch(71% 0.03 55)", "oklch(83% 0.03 55)", "oklch(95% 0.03 55)"] },
+      "khaki": { "role": "tertiary", "displayName": "Khaki", "canonical": "oklch(65% 0.06 75)", "tonalRamp": ["oklch(15% 0.06 75)", "oklch(26% 0.06 75)", "oklch(37% 0.06 75)", "oklch(49% 0.06 75)", "oklch(60% 0.06 75)", "oklch(71% 0.06 75)", "oklch(83% 0.06 75)", "oklch(95% 0.06 75)"] },
+      "cream": { "role": "tertiary", "displayName": "Cream", "canonical": "oklch(85% 0.03 75)", "tonalRamp": ["oklch(15% 0.03 75)", "oklch(26% 0.03 75)", "oklch(37% 0.03 75)", "oklch(49% 0.03 75)", "oklch(60% 0.03 75)", "oklch(71% 0.03 75)", "oklch(83% 0.03 75)", "oklch(95% 0.03 75)"] },
+      "umber": { "role": "tertiary", "displayName": "Umber", "canonical": "oklch(38% 0.05 55)", "tonalRamp": ["oklch(15% 0.05 55)", "oklch(26% 0.05 55)", "oklch(37% 0.05 55)", "oklch(49% 0.05 55)", "oklch(60% 0.05 55)", "oklch(71% 0.05 55)", "oklch(83% 0.05 55)", "oklch(95% 0.05 55)"] },
+      "ink": { "role": "neutral", "displayName": "Ink", "canonical": "oklch(16% 0.005 55)", "tonalRamp": ["oklch(15% 0.005 55)", "oklch(26% 0.005 55)", "oklch(37% 0.005 55)", "oklch(49% 0.005 55)", "oklch(60% 0.005 55)", "oklch(71% 0.005 55)", "oklch(83% 0.005 55)", "oklch(95% 0.005 55)"] },
+      "warm-paper": { "role": "neutral", "displayName": "Warm Paper", "canonical": "oklch(97% 0.01 80)", "tonalRamp": ["oklch(15% 0.01 80)", "oklch(26% 0.01 80)", "oklch(37% 0.01 80)", "oklch(49% 0.01 80)", "oklch(60% 0.01 80)", "oklch(71% 0.01 80)", "oklch(83% 0.01 80)", "oklch(95% 0.01 80)"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "The hero name only — kinetic per-letter entrance, reacts to cursor/touch tilt." },
+      "headline": { "displayName": "Headline", "purpose": "Section leads, card/entry titles, modal titles." },
+      "body": { "displayName": "Body", "purpose": "Paragraph copy everywhere; never set in the display/headline serif." },
+      "label": { "displayName": "Label", "purpose": "Eyebrows, chips, dates, metric labels, button text — anything under ~0.75rem." }
+    },
+    "shadows": [
+      { "name": "glass-ambient", "value": "0 8px 32px rgba(20, 18, 16, 0.08)", "purpose": "The only shadow value in the system; paired with blur(16px) and a 1px translucent border on every .glass surface." }
+    ],
+    "motion": [
+      { "name": "duration-fast", "value": "0.2s", "purpose": "Modal backdrop fade, carousel crossfade." },
+      { "name": "duration-base", "value": "0.35s", "purpose": "Default entrance/transition duration for most components." },
+      { "name": "duration-slow", "value": "0.6s", "purpose": "Page transitions stay under this ceiling." },
+      { "name": "ease-out", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Default entrance easing." },
+      { "name": "ease-in-out", "value": "cubic-bezier(0.65, 0, 0.35, 1)", "purpose": "Symmetric transitions (e.g. timeline expand/collapse)." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "lg", "value": "1024px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Solid ink-filled pill CTA, e.g. \"View Projects\".",
+      "html": "<a class=\"ds-btn-primary\" href=\"#\">View Projects</a>",
+      "css": ".ds-btn-primary { display: inline-block; background: #141210; color: #f7f5f0; font-family: \"Geist Mono\", ui-monospace, monospace; font-size: 0.875rem; padding: 0.75rem 1.5rem; border-radius: 9999px; text-decoration: none; transition: transform 0.2s ease; } .ds-btn-primary:hover { transform: scale(1.03); } .ds-btn-primary:focus-visible { outline: 2px solid #3a2c1e; outline-offset: 2px; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Frost-glass secondary CTA, e.g. \"Connect on LinkedIn\".",
+      "html": "<a class=\"ds-btn-ghost\" href=\"#\">Connect on LinkedIn</a>",
+      "css": ".ds-btn-ghost { display: inline-block; background: rgba(255,255,255,0.55); border: 1px solid rgba(255,255,255,0.45); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: 0 8px 32px rgba(20,18,16,0.08); color: #141210; font-family: \"Geist Mono\", ui-monospace, monospace; font-size: 0.875rem; padding: 0.75rem 1.5rem; border-radius: 9999px; text-decoration: none; transition: transform 0.2s ease; } .ds-btn-ghost:hover { transform: scale(1.03); } .ds-btn-ghost:focus-visible { outline: 2px solid #3a2c1e; outline-offset: 2px; }"
+    },
+    {
+      "name": "Tech Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Stack/tag pill used across project cards, blog posts, and experience entries.",
+      "html": "<span class=\"ds-chip\">Next.js</span>",
+      "css": ".ds-chip { display: inline-block; background: rgba(20,18,16,0.05); color: rgba(20,18,16,0.75); font-family: \"Geist Mono\", ui-monospace, monospace; font-size: 0.65rem; padding: 0.25rem 0.75rem; border-radius: 9999px; }"
+    },
+    {
+      "name": "Glass Card",
+      "kind": "card",
+      "refersTo": "card-glass",
+      "description": "The one reused elevated surface — project/experience/writing cards all share this treatment.",
+      "html": "<div class=\"ds-card\"><h3 class=\"ds-card-title\">FarmOS</h3><p class=\"ds-card-summary\">A farm-management dashboard — won the Gemini track at QuackHack.</p></div>",
+      "css": ".ds-card { background: rgba(255,255,255,0.55); border: 1px solid rgba(255,255,255,0.45); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: 0 8px 32px rgba(20,18,16,0.08); border-radius: 1.75rem; padding: 1rem 1.25rem; } .ds-card-title { font-family: \"Instrument Serif\", Georgia, serif; font-size: 1.25rem; color: #141210; margin: 0 0 0.5rem; } .ds-card-summary { font-family: Geist, system-ui, sans-serif; font-size: 0.875rem; line-height: 1.625; color: rgba(20,18,16,0.7); margin: 0; }"
+    },
+    {
+      "name": "Cursor Follower",
+      "kind": "custom",
+      "refersTo": "cursor-follower",
+      "description": "Signature component: desktop-only mix-blend-difference ring that grows 14px→36px over links/buttons. Never rendered on touch or under reduced motion.",
+      "html": "<div class=\"ds-cursor\" aria-hidden=\"true\"></div>",
+      "css": ".ds-cursor { position: fixed; top: 0; left: 0; width: 14px; height: 14px; border-radius: 9999px; border: 1px solid rgba(20,18,16,0.6); mix-blend-mode: difference; pointer-events: none; transform: translate(-50%, -50%); transition: width 0.15s, height 0.15s, opacity 0.15s; } .ds-cursor.is-hovering { width: 36px; height: 36px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Frosted Atlas",
+    "overview": "Everything on this site sits on the same two-layer idea: slow-moving warm color underneath, frosted glass floating above it. The color layer (tan, khaki, cream, umber, espresso mesh blobs — an earth-tone camo family, matched against a BAPE camo reference image; it replaced an earlier, more colorful earth-tone set, which itself replaced the original bright sunset set) is where the \"personal/warm\" half of the brand lives; the glass layer (one repeated .glass treatment — blur, hairline translucent border, soft ambient shadow) is where the \"technical/precise\" half lives, because every panel gets the exact same restrained treatment no matter what's inside it. The globe is the system's signature object: a photographic day-lit Earth sphere (not a stylized or frosted one) with an espresso atmosphere glow and accent-colored pins, carrying the travel/exploration half of the voice (curious builder + avid traveler) into the one section that is an atlas rather than just alluding to one. A color-keyed legend of clickable trip buttons sits below it, so discovering what the pins are never depends on hovering the canvas.\n\nDensity is calm, not sparse: generous vertical rhythm between sections (py-24, py-32 on larger screens), single accent color per surface rather than multiple hues competing on one card, and a mono \"label\" layer (uppercase section eyebrows, tech chips, dates) that keeps the whole thing reading as an engineer's notebook rather than a marketing page. Confirmed rejection: an earlier, lighter \"editorial\" version of this site (Sept) was explicitly replaced for being too quiet — this system is colorful, glassy, and motion-forward by deliberate contrast to that.",
+    "keyCharacteristics": [
+      "Earth-tone camo mesh blobs under frosted glass panels — color and clarity, never color as clarity.",
+      "One glass treatment reused everywhere; no competing elevation language.",
+      "Serif is a headline-only accent; everything that reads as a sentence is the sans body face.",
+      "A mono \"label\" layer (eyebrows, chips, dates, button text) signals precision against the soft glass.",
+      "Continuous, generous corner rounding at every scale — no sharp corners anywhere in the system.",
+      "Dashed borders are reserved exclusively for placeholder/TODO slots, never decoration."
+    ],
+    "rules": [
+      { "name": "The One Earth Family Rule", "body": "Decorative color always comes from the same five-tone camo family (tan/khaki/cream/umber/espresso) plus ink and paper — never a sixth hue, never anything outside this tonal range.", "section": "colors" },
+      { "name": "The Three-Plus-White Rule", "body": "The hero's own blob set deliberately excludes umber and keeps espresso to the fully-saturated set only elsewhere (card gradients) — the predecessor palettes' version of this rule traced back to direct feedback that a violet/rose-heavy mix \"read as floral\" when overused; the same restraint principle carried forward here. The hero reads as its three warmest tones (tan/khaki/cream) plus a bright white haze blob, not the full five-tone palette at once.", "section": "colors" },
+      { "name": "The Contrast Floor Rule", "body": "Muted ink text never drops below /65 opacity at large sizes or /70 otherwise (text-ink/40–/60 measured at 2.58:1–4.73:1 against Warm Paper with the current black ink, re-verified when ink changed from indigo to black). /75+ reads as \"least muted\" and is preferred wherever the content allows it.", "section": "colors" },
+      { "name": "The Serif-Is-An-Accent Rule", "body": "Instrument Serif never appears in a paragraph — only headline-scale moments (names, titles, section leads). Everything that reads as a sentence is Geist.", "section": "typography" },
+      { "name": "The Mono-Everywhere-Small Rule", "body": "Any text under ~0.75rem is Geist Mono, not a smaller Geist size — the mono face is what signals \"this is a label, not prose.\"", "section": "typography" },
+      { "name": "The 11px Functional Floor Rule", "body": "The label tier never drops below 0.75rem (12px) — a 0.6rem/0.65rem sub-tier existed here once (badges, chips, dates, reading time) and measured under the 11px legibility floor for functional text; collapsed to one size during the first polish pass, not left as a second, smaller label scale.", "section": "typography" },
+      { "name": "The One Glass Shadow Rule", "body": "There is exactly one elevation treatment. Don't invent a second shadow value for an individual component, no matter how \"special\" it feels.", "section": "elevation" },
+      { "name": "The Glass Budget Rule", "body": "Cap how many stacked .glass/backdrop-filter surfaces appear on screen at once — it isn't free, and body text needs enough opacity behind it to stay contrast-accessible over the blobs underneath.", "section": "elevation" },
+      { "name": "The Blob Rhythm Rule", "body": "Only Hero carries the mesh-blob backdrop (via the shared SectionBlobs component, which also animates an organic shape-morph, rotation, and a seeded per-blob drift path so blobs don't move in lockstep); every other section -- About, Experience, Projects, Travel -- is plain paper. Settled after several rounds of experimentation: Hero-only originally, briefly carried into every section, pulled back to just About, briefly also copied onto Projects, then pulled back to Hero-only. Hero's own <section> has no max-w (always full-width), so it never needed the full-bleed outer/inner-wrapper split the other sections used while they carried blobs. A new section defaults to plain paper, not blobs -- Hero is the one deliberate exception.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep the base canvas off-white (#f7f5f0) — never pure white, anywhere, including controls layered on top of photos.",
+      "Do reuse the single .glass treatment for every elevated surface; introduce a new shadow or border value only if .glass itself changes.",
+      "Do keep Instrument Serif to headline-scale moments only; route every paragraph, label, or button through Geist/Geist Mono.",
+      "Do keep muted ink text at /65+ (large text) or /70+ (everything else) — /75+ by preference.",
+      "Do gate every motion effect (parallax, kinetic text, blob animation, cursor follower, magnetic pull) behind useReducedMotionSafe(), never the raw framer-motion hook, and verify in practice, not by assumption.",
+      "Do let optional project-modal blocks (metrics, architecture, video, screenshots, links) disappear cleanly when their data is absent — never render an empty placeholder block."
+    ],
+    "donts": [
+      "Don't add a persistent nav bar, dark mode, resume PDF, contact form, GitHub-stats widget, or project category filter — all explicitly out of scope.",
+      "Don't reintroduce the MapLibre flat-map/globe toggle — Travel is globe-only per a later direct request (\"i dont want a map. just globe\").",
+      "Don't reintroduce sound or haptics (Web Audio UI tones, Vibration API) — built once, removed per direct request.",
+      "Don't use a dashed border for anything other than a placeholder/TODO slot.",
+      "Don't stack more .glass/backdrop-filter surfaces on one screen than the Glass Budget Rule allows, and don't let body text sit on glass without enough opacity behind it to stay contrast-accessible over the blobs."
+    ]
+  }
+}

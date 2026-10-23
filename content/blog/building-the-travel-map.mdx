@@ -1,8 +1,8 @@
 ---
-title: "Building the travel globe: globe.gl, lighting gotchas, and a pin-visibility bug"
+title: "Building the travel globe: globe.gl, a pin-visibility bug, and making pins discoverable"
 date: "TODO-2026-XX-XX"
 tags: ["travel + tech"]
-summary: "The Travel section is a globe.gl globe, lazy-loaded and WebGL-gated — what it took to get pins visible on load, lighting actually visible, and reduced motion handled properly."
+summary: "The Travel section is a globe.gl globe, lazy-loaded and WebGL-gated — what it took to get pins visible on load, choose a real-earth texture, and make clicking a pin something a visitor can actually discover."
 ---
 
 The Travel section went through two real implementations before landing
@@ -36,21 +36,18 @@ can't change mid-session so there's no reason to re-check it) — if it
 comes back false, the section renders a plain text fallback instead of
 a broken canvas.
 
-## The globe went solid black, and it wasn't a bug in the usual sense
+## Stylized first, real-earth later
 
-The globe's surface is a custom `THREE.MeshStandardMaterial` in the
-site's ink color — no real-earth texture, since none existed to pull in
-and a flat stylized sphere fits the rest of the glass-and-gradient
-language better anyway. First render: a plain black circle, no visible
-roundness, no pins.
-
-The cause was three.js itself. Versions from r155 onward default to
-physically-correct (photometric) light units, where old-style intensities
-that used to read as "a normal fill light" — `intensity={1}` on a point
-light a few units away — now render as functionally unlit. The fix was
-blunt: raise the ambient and point-light intensities until the sphere
-actually showed a visible lighting gradient against a real render, not
-against pre-r155 example code.
+The first globe.gl pass used a flat, abstract ink-colored sphere — no
+real-earth texture, since the glass-and-gradient language around it
+didn't obviously call for one, and it was the quicker thing to ship
+first. It read as too flat and abstract next to everything else on the
+page, so it was swapped for a true-color, day-lit Earth photo texture
+plus a bump map for actual terrain relief (mountains and ridges catch
+the light instead of a flat-shaded sphere). Both images are vendored
+into `/public` (244KB + 378KB combined) rather than fetched from a CDN
+at runtime, the same call made for the MapLibre worker fix earlier in
+this project.
 
 ## Pins you can't see are pins that don't exist
 
@@ -63,9 +60,15 @@ starting camera angle, so a visitor landed on a bare globe and had to
 manually orbit it to discover there was anything there at all.
 
 The fix: set an explicit starting point of view (`globe.pointOfView({
-lat: 10, lng: 120, altitude: 2.2 }, 0)` — `0` transition ms, so it's
+lat: 10, lng: 120, altitude: 2.6 }, 0)` — `0` transition ms, so it's
 immediate, not animated) that frames the cluster on load instead of
-leaving it to chance.
+leaving it to chance. The altitude has since moved out a touch further
+(from an initial `2.2`) to leave visible padding around the sphere
+instead of it nearly touching the container edges. Each pin's hit
+radius was also bumped up separately (`pointRadius(0.9)`, up from
+`0.4`) — in globe.gl, that one value drives both the rendered marker
+size and its raycast click area together, so a bigger pin is also a
+bigger, easier target.
 
 ## Reduced motion, done per-feature rather than as one switch
 
@@ -75,9 +78,14 @@ off: continuous auto-rotation (`controls.autoRotate`) is skipped
 entirely when reduced motion is on, not just slowed down; route arcs
 switch from a continuously flowing dash animation
 (`arcDashAnimateTime`) to fully-formed static lines
-(`arcDashLength(1)`, `arcDashGap(0)`); user-driven orbit and zoom stay
-enabled either way, since manually dragging the globe isn't the kind of
-motion reduced-motion settings are about.
+(`arcDashLength(1)`, `arcDashGap(0)`); user-driven orbit (drag-to-rotate)
+stays enabled either way, since manually dragging the globe isn't the
+kind of motion reduced-motion settings are about. Zoom is the one
+exception that isn't a reduced-motion decision at all — `controls.
+enableZoom = false` is set unconditionally, after two separate rounds of
+the sphere clipping past its own container at different zoom levels.
+Tuning a safe zoom range twice and having it break again wasn't worth a
+third attempt; removing zoom outright removed the whole failure class.
 
 ## Opening a trip
 
@@ -86,3 +94,21 @@ which pin it is, which opens a gallery panel reusing the exact
 focus-trap / Escape / click-outside-to-close pattern already built for
 the project modals — one shared interaction model, not a second one
 invented for the globe.
+
+## A pin with no visible affordance is a pin nobody finds
+
+Even with the camera framed correctly, clicking a pin was never
+actually *discoverable*. The only signal that a pin was interactive at
+all was `onPointHover` swapping the cursor to a pointer — a real
+affordance on a desktop mouse, and no affordance whatsoever on a touch
+screen, where there's no hover state to swap, and no signal at all for
+a keyboard-only or screen-reader user, since `onPointClick` is wired
+only to globe.gl's internal mouse-raycast against the canvas.
+
+The fix didn't touch the globe at all: a plain instruction line plus a
+row of real `<button>` elements — one per trip, each carrying a small
+dot in that trip's pin color — now sits below the globe, calling the
+exact same `onSelectTrip` the pins call. Same destination, three more
+ways to get there: it's keyboard-focusable, it works identically on
+touch, and it even works when WebGL isn't available at all, since
+nothing about it depends on the canvas rendering.
