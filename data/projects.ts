@@ -50,8 +50,8 @@ export const projects: Project[] = [
     cover: "/portfoliov2-images/farm-os.jpeg",
     links: {},
     metrics: [
-      { label: "QuackHack", value: "Gemini track winner" },
-      { label: "Soil sensors", value: "40, across 5 layers" },
+      { label: "QuackHack 3", value: "Gemini Track Winner" },
+      // { label: "Soil sensors", value: "40, across 5 layers" },
     ],
     featured: true,
   },
