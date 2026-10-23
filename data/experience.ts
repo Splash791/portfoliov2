@@ -45,8 +45,8 @@ export const experience: Experience[] = [
     summary:
       "Startup within the NVIDIA Inception Program.",
     details: [
-      "Integrated and managed backend connectivity with Better Auth and TanStack Query, implementing secure authentication flows, efficient API communication, and reliable client-side data caching tailored for mobile architecture.",
-      "Headed the migration of an existing web application to a cross-platform mobile app using React Native and Expo, ensuring functionality and performance across iOS and Android while maintaining feature parity with the web product.",
+      "- Integrated and managed backend connectivity with Better Auth and TanStack Query, implementing secure authentication flows, efficient API communication, and reliable client-side data caching tailored for mobile architecture.",
+      "- Headed the migration of an existing web application to a cross-platform mobile app using React Native and Expo, ensuring functionality and performance across iOS and Android while maintaining feature parity with the web product.",
     ],
   },
   {
