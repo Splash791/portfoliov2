@@ -3,7 +3,6 @@ import About from "@/components/about/About";
 import Experience from "@/components/experience/Experience";
 import Projects from "@/components/projects/Projects";
 import Travel from "@/components/travel/Travel";
-import Connect from "@/components/connect/Connect";
 import Footer from "@/components/ui/Footer";
 import SnapSection from "@/components/ui/SnapSection";
 
@@ -28,10 +27,6 @@ export default function Home() {
 
       <SnapSection>
         <Travel />
-      </SnapSection>
-
-      <SnapSection>
-        <Connect />
       </SnapSection>
 
       {/* Footer deliberately isn't snapped -- it's a closing strip, not a

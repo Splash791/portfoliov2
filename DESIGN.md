@@ -2,12 +2,12 @@
 name: Tyler Quach — Portfolio v2
 description: A frosted-glass, warm-blob portfolio where glass panels float over color and a globe carries the travel throughline.
 colors:
-  ember-coral: "#ff6f59"
-  golden-amber: "#f6ae2d"
-  soft-peach: "#ffb88c"
-  warm-rose: "#e8527a"
-  dusk-violet: "#8c7ae6"
-  indigo-ink: "#1e1b4b"
+  tan: "#8c6b42"
+  khaki: "#b89968"
+  cream: "#ddd0b0"
+  umber: "#5e4830"
+  espresso: "#3a2c1e"
+  ink: "#141210"
   warm-paper: "#f7f5f0"
   frost-glass-bg: "rgba(255, 255, 255, 0.55)"
   frost-glass-border: "rgba(255, 255, 255, 0.45)"
@@ -47,18 +47,18 @@ spacing:
   card-gap: "1.5rem"
 components:
   button-primary:
-    backgroundColor: "{colors.indigo-ink}"
+    backgroundColor: "{colors.ink}"
     textColor: "{colors.warm-paper}"
     rounded: "{rounded.pill}"
     padding: "0.75rem 1.5rem"
   button-ghost:
     backgroundColor: "{colors.frost-glass-bg}"
-    textColor: "{colors.indigo-ink}"
+    textColor: "{colors.ink}"
     rounded: "{rounded.pill}"
     padding: "0.75rem 1.5rem"
   chip:
-    backgroundColor: "rgba(30, 27, 75, 0.05)"
-    textColor: "rgba(30, 27, 75, 0.75)"
+    backgroundColor: "rgba(20, 18, 16, 0.05)"
+    textColor: "rgba(20, 18, 16, 0.75)"
     rounded: "{rounded.pill}"
     padding: "0.25rem 0.75rem"
   card-glass:
@@ -78,16 +78,22 @@ components:
 **Creative North Star: "The Frosted Atlas"**
 
 Everything on this site sits on the same two-layer idea: slow-moving warm
-color underneath, frosted glass floating above it. The color layer (coral,
-amber, peach, rose, violet mesh blobs) is where the "personal/warm" half of
-the brand lives; the glass layer (one repeated `.glass` treatment — blur,
+color underneath, frosted glass floating above it. The color layer (tan,
+khaki, cream, umber, espresso mesh blobs — an earth-tone camo family,
+matched against a BAPE camo reference image per direct request; it
+replaced an earlier, more colorful earth-tone set, which itself replaced
+the original bright sunset set) started as a Hero-only effect but now
+continues, section by section, through the rest of the page rather than
+stopping after the first viewport (see the Blob Rhythm Rule below) — it's
+where the "personal/warm" half of the brand lives; the glass layer (one
+repeated `.glass` treatment — blur,
 hairline translucent border, soft ambient shadow) is where the
 "technical/precise" half lives, because every panel gets the exact same
 restrained treatment no matter what's inside it. The globe is the system's
 signature object: a photographic day-lit Earth sphere (not a stylized or
 frosted one — a true-color texture plus a bump map for real terrain
-relief) with a violet atmosphere glow and three accent-colored pins,
-carrying the travel/exploration half of the voice (curious builder + avid
+relief) with an espresso atmosphere glow and accent-colored pins, carrying
+the travel/exploration half of the voice (curious builder + avid
 traveler) into the one section that *is* an atlas rather than just
 alluding to one. A color-keyed legend of clickable trip buttons sits below
 it, so discovering what the pins are and reaching a trip gallery never
@@ -112,30 +118,30 @@ and motion-forward by deliberate contrast to that.
 
 ## Colors
 
-The palette is one warm family carrying color, plus one cool-leaning ink for text and one off-white paper for the canvas — never more than one hue family competing on a single surface at once.
+The palette is one earth-tone camo family carrying color, plus one black ink for text and one off-white paper for the canvas — never more than one hue family competing on a single surface at once. (Tailwind/CSS token names below still read `coral`/`peach`/`amber`/`rose` in code — kept as-is to avoid renaming every `bg-coral`/`from-amber`/etc. utility across the codebase each time the hues moved, first from bright sunset to a more colorful earth-tone set, then to this camo set. `violet` was the one exception, renamed to `sage` during the first earth-tone pass since neither earth-tone set has a violet in it.)
 
 ### Primary
-- **Ember Coral** (`#ff6f59`): the leading accent. First hero blob, first travel-pin color, the featured-project metric chip background (`bg-coral/15`), first stop in every card-cover gradient fallback.
+- **Tan** (`#8c6b42`, token `coral`): the leading accent. First hero blob, first travel-pin color, the featured-project metric chip background (`bg-coral/15`), first stop in every card-cover gradient fallback.
 
 ### Secondary
-- **Dusk Violet** (`#8c7ae6`): the cool-leaning depth accent "for depth" per the brand brief. Carries the globe's atmosphere glow and route arcs, a hero blob, and a travel-pin color — the accent most tied to the Travel/Atlas half of the system.
+- **Espresso** (`#3a2c1e`, token `sage`): the deepest, darkest tone — the "depth" accent. Carries the globe's atmosphere glow and route arcs, a hero blob, and a travel-pin color — the accent most tied to the Travel/Atlas half of the system.
 
 ### Tertiary
-- **Golden Amber** (`#f6ae2d`): third hero blob and travel-pin color; reads as warmth/energy against coral's warmth and violet's cool.
-- **Soft Peach** (`#ffb88c`): the lightest warm tone — a hero blob and a cover-gradient stop, used where a hue needs to feel airy rather than saturated.
-- **Warm Rose** (`#e8527a`): a cover-gradient stop pairing with coral/violet; not used in the hero's own blob set (that set was deliberately kept to a "sunset + white" read — see Named Rule below), reserved for card-level gradient variety.
+- **Khaki** (`#b89968`, token `amber`): third hero blob and travel-pin color; a mid-tone between tan's warmth and espresso's depth.
+- **Cream** (`#ddd0b0`, token `peach`): the lightest tone — a hero blob and a cover-gradient stop, used where a hue needs to feel airy rather than saturated.
+- **Umber** (`#5e4830`, token `rose`): a cover-gradient stop pairing with tan/espresso; not used in the hero's own blob set (that set stays to the three warmest tones — see Named Rule below), reserved for card-level gradient variety.
 
 ### Neutral
 - **Warm Paper** (`#f7f5f0`): the base canvas. Never pure white — body background, and the tint behind the carousel's prev/next controls (`bg-paper/70`).
-- **Indigo Ink** (`#1e1b4b`): the single text/contrast color. ~14.7:1 on Warm Paper (WCAG AAA). Also doubles as the primary button fill and the modal backdrop tint (`bg-ink/30`).
+- **Ink** (`#141210`, near-black): the single text/contrast color. ~17.15:1 on Warm Paper (WCAG AAA). Also doubles as the primary button fill and the modal backdrop tint (`bg-ink/30`).
 - **Frost Glass** (`rgba(255,255,255,0.55)` fill / `rgba(255,255,255,0.45)` border): the one surface treatment every elevated panel uses, from the hero shell down to a single carousel's empty-state placeholder.
 
 ### Named Rules
-**The One Warm Family Rule.** Decorative color always comes from the same five-hue warm family (coral/amber/peach/rose/violet) plus ink and paper — never a sixth hue, never a cool accent besides violet and ink.
+**The One Earth Family Rule.** Decorative color always comes from the same five-tone camo family (tan/khaki/cream/umber/espresso) plus ink and paper — never a sixth hue, never anything outside this tonal range.
 
-**The Sunset-Plus-White Rule.** The hero's own blob set deliberately excludes rose and keeps violet to the fully-saturated set only elsewhere (card gradients) — confirmed from direct feedback that a violet/rose-heavy mix "read as floral rather than sunset." The hero reads as sunset + a bright white haze blob, not the full five-hue palette at once.
+**The Three-Plus-White Rule.** The hero's own blob set deliberately excludes umber and keeps espresso to the fully-saturated set only elsewhere (card gradients) — the predecessor palettes' own version of this rule traced back to direct feedback that a violet/rose-heavy mix "read as floral" when overused; the same restraint principle carried forward here. The hero reads as its three warmest tones (tan/khaki/cream) plus a bright white haze blob, not the full five-tone palette at once.
 
-**The Contrast Floor Rule.** Muted ink text never drops below `/65` opacity at large sizes or `/70` otherwise (`text-ink/40`–`/60` measured as low as 2.4:1–4.2:1 against Warm Paper, confirmed via Lighthouse). `/75`+ reads as "least muted" and is preferred wherever the content allows it.
+**The Contrast Floor Rule.** Muted ink text never drops below `/65` opacity at large sizes or `/70` otherwise (`text-ink/40`–`/60` measured at 2.58:1–4.73:1 against Warm Paper with the current black ink — re-verified, not just carried over, when ink changed from indigo to black). `/75`+ reads as "least muted" and is preferred wherever the content allows it.
 
 ## Typography
 
@@ -147,7 +153,7 @@ The palette is one warm family carrying color, plus one cool-leaning ink for tex
 
 ### Hierarchy
 - **Display** (400, `3rem`→`6rem` fluid, line-height 0.95): the hero name only — kinetic per-letter entrance, reacts to cursor/touch tilt.
-- **Headline** (400, `1.25rem`→`2.25rem`): section leads ("Let's connect"), card/entry titles (project cards, featured experience org, blog post titles, project-modal title).
+- **Headline** (400, `1.25rem`→`2.25rem`): section leads, card/entry titles (project cards, featured experience org, blog post titles, project-modal title).
 - **Body** (400, `0.875rem`, line-height 1.625, `text-ink/70`–`/80`): paragraph copy everywhere — About's lead, card summaries, experience detail bullets, connect copy.
 - **Label** (400, `0.75rem` flat — no smaller tier, letter-spacing `0.05em`, uppercase where used): section labels ("ABOUT", "EXPERIENCE"), tech-stack chips, dates, metric labels, button text, the role line under the hero name.
 
@@ -160,7 +166,7 @@ The palette is one warm family carrying color, plus one cool-leaning ink for tex
 
 Single-column mobile-first, promoted to a two-column grid at the `sm` breakpoint (640px) for card grids (Experience, Projects, Writing); the featured tile in Experience and Projects spans both columns (`sm:col-span-2`) rather than being pulled out of its natural (chronological / importance) position in the array. About uses an asymmetric `lg:grid-cols-[1.1fr_0.9fr]` text/photo split instead of a symmetric grid.
 
-Container widths scale to content, not a single fixed shell: `max-w-3xl` for the single-block Connect section, `max-w-5xl` for text-forward sections (About, Experience, Writing) and the Footer, `max-w-6xl` for the hero's inner glass shell, `max-w-7xl` for Travel specifically (wider than its siblings so the globe's own `max-w-6xl` isn't clamped by the section wrapper — a circular object needs more horizontal room than a text column).
+Container widths scale to content, not a single fixed shell: `max-w-5xl` for text-forward sections (About, Experience, Writing) and the Footer, `max-w-6xl` for the hero's inner glass shell, `max-w-7xl` for Travel specifically (wider than its siblings so the globe's own size isn't clamped by the section wrapper — a circular object needs more horizontal room than a text column).
 
 Vertical rhythm is one consistent pair of values: `py-24` (mobile) stepping up to `py-32` (`sm:` and up) between every major section, with a flat `px-6` horizontal gutter at every width. Card grids use a `gap-6` (1.5rem) rhythm between tiles.
 
@@ -169,17 +175,19 @@ Vertical rhythm is one consistent pair of values: `py-24` (mobile) stepping up t
 Hybrid, but deliberately narrow: color and blur create depth (blurred mesh blobs sitting behind everything, parallax-free but visually "floating"), while every elevated surface gets exactly one glass treatment — never a second, bespoke shadow value for an individual component. Flat elements (chips, footer text, nav-less page chrome) get zero shadow; anything that needs to feel "above" the page gets the one `.glass` treatment, nothing in between.
 
 ### Shadow Vocabulary
-- **Glass ambient** (`box-shadow: 0 8px 32px rgba(30, 27, 75, 0.08)`): the only shadow value in the system. Paired with `backdrop-filter: blur(16px)` and a `1px` translucent border. Used on every `.glass` surface — hero shell, cards, modal, carousel, connect block, globe fallback state.
+- **Glass ambient** (`box-shadow: 0 8px 32px rgba(20, 18, 16, 0.08)`): the only shadow value in the system. Paired with `backdrop-filter: blur(16px)` and a `1px` translucent border. Used on every `.glass` surface — hero shell, cards, modal, carousel, globe fallback state.
 
 ### Named Rules
 **The One Glass Shadow Rule.** There is exactly one elevation treatment. Don't invent a second shadow value for an individual component, no matter how "special" it feels.
 **The Glass Budget Rule.** Cap how many stacked `.glass`/`backdrop-filter` surfaces appear on screen at once — it isn't free, and body text needs enough opacity behind it to stay contrast-accessible over the colorful blobs underneath.
 
+**The Blob Rhythm Rule.** The mesh-blob backdrop (via the shared `SectionBlobs` component) alternates on and off down the page rather than running continuously or staying Hero-only: **Hero** (blobs) → **About** (plain paper) → **Experience** (blobs) → **Projects** (plain paper) → **Travel** (plain paper — the globe itself is already that section's visual centerpiece, so it doesn't also get blobs). Each blobbed section uses its own position/color/count config, not a copy-pasted repeat of Hero's — Hero gets the full five-blob treatment (its "peak" moment); other blobbed sections use a quieter 3-blob set so the backdrop stays behind the glass cards' content rather than competing with it. A new section being added to the page should deliberately choose blobs-or-plain as part of that rhythm, not default to whichever is easiest.
+
 ## Shapes
 
 Continuous, generous rounding at every scale — there are no sharp corners anywhere in the system, only a small fixed vocabulary of radii: large hero/modal/connect/globe-fallback shells at `2rem` (32px), mid-weight cards (project, experience, writing, carousel) at `1.75rem` (28px), small inset tiles (metric `dl` cells, architecture/screenshot image frames) at `0.75rem` (12px, Tailwind's `rounded-xl`), and every pill-shaped control (buttons, chips, tags, the featured badge) fully rounded at `9999px`.
 
-Borders are hairline and translucent, never a hard line: the glass border (`rgba(255,255,255,0.45)`) on elevated surfaces, a `border-ink/10` divider on the footer. The one deliberate exception is a dashed border (`borderStyle: "dashed"` applied inline so it wins over `.glass`'s own border shorthand at equal specificity) — reserved exclusively for placeholder/TODO slots (the hero headshot box, the empty photo-carousel state) and never used decoratively elsewhere.
+Borders are hairline and translucent, never a hard line: the glass border (`rgba(255,255,255,0.45)`) on elevated surfaces, a `border-ink/10` divider on the footer. The one deliberate exception is a dashed border (`borderStyle: "dashed"` applied inline so it wins over `.glass`'s own border shorthand at equal specificity) — reserved exclusively for placeholder/TODO slots (e.g. the empty photo-carousel state) and never used decoratively elsewhere. The hero headshot used to be one of these (a dashed "headshot placeholder" box) until a real photo replaced it.
 
 ## Components
 
@@ -187,8 +195,8 @@ Every interactive surface shares the same quietly-confident restraint: pill butt
 
 ### Buttons
 - **Shape:** fully rounded pill (`9999px`), `px-6 py-3` (desktop CTAs), `px-5 py-2.5` (modal footer links).
-- **Primary:** solid Indigo Ink fill, Warm Paper text, Geist Mono label (e.g. "View Projects", "LinkedIn", "GitHub").
-- **Ghost:** Frost Glass fill (the `.glass` class itself), Indigo Ink text — used for the secondary CTA ("Connect on LinkedIn") and any "Demo" link beside a primary "GitHub" button.
+- **Primary:** solid Ink fill, Warm Paper text, Geist Mono label (e.g. "View Projects", "LinkedIn", "GitHub").
+- **Ghost:** Frost Glass fill (the `.glass` class itself), Ink text — used for the secondary CTA ("Connect on LinkedIn") and any "Demo" link beside a primary "GitHub" button.
 - **Hover:** both variants scale to `1.03` on hover (`transition-transform`); primary/ghost CTAs are additionally wrapped in the Magnetic component on fine-pointer devices, pulling toward the cursor within the button's bounds (spring damping 15 / stiffness 200) — disabled outright under reduced motion or on touch.
 
 ### Chips / Tags
@@ -215,7 +223,7 @@ Every interactive surface shares the same quietly-confident restraint: pill butt
 - **Intentionally absent.** A floating glass nav pill was in the original plan but was explicitly removed; the site currently has no persistent nav chrome. Don't reintroduce one without being asked.
 
 ### Signature Component: Travel Globe
-A `globe.gl`-based 3D sphere (not raw Three.js/r3f) rendered on a transparent background so the page's own blob/paper backdrop shows through. Trip pins use the same three-color Ember Coral / Dusk Violet / Golden Amber rotation as the rest of the palette; route arcs and the globe's atmosphere glow are both Dusk Violet, tying the "depth" accent specifically to this section. Lazy-loaded with no SSR, gated behind a WebGL feature check that falls back to a plain Frost Glass panel with a Geist Mono status line ("3D globe isn't available on this device.") rather than failing silently. A hover-only cursor swap on the canvas is never the *only* affordance: an always-visible instruction line plus a row of Frost Glass pill buttons (one per trip, each carrying its matching pin-color dot) sits directly below the globe, giving touch, keyboard, and mouse users the same independent path into a trip gallery.
+A `globe.gl`-based 3D sphere (not raw Three.js/r3f) rendered on a transparent background so the page's own blob/paper backdrop shows through. Trip pins rotate through the full five-tone camo family (Tan / Espresso / Khaki / Umber / Cream); route arcs and the globe's atmosphere glow are both Espresso, tying the "depth" accent specifically to this section. Lazy-loaded with no SSR, gated behind a WebGL feature check that falls back to a plain Frost Glass panel with a Geist Mono status line ("3D globe isn't available on this device.") rather than failing silently. A hover-only cursor swap on the canvas is never the *only* affordance: an always-visible instruction line plus a row of Frost Glass pill buttons (one per trip, each carrying its matching pin-color dot) sits directly below the globe, giving touch, keyboard, and mouse users the same independent path into a trip gallery. Flight routes additionally animate: a plane icon glides the actual great-circle path with the route progressively drawing in behind it, disappearing and regenerating from the opposite end each pass rather than retracing itself; other travel modes render as plain static lines with no moving icon.
 
 ## Do's and Don'ts
 

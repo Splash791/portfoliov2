@@ -68,8 +68,14 @@ export default function Projects() {
           fill in beside the wide one instead of leaving a gap. Mobile
           stays a plain single-column stack (span classes are sm:/lg:-
           gated), so FarmOS there just reads as a card with visible full
-          summary + metric badge, not a forced shape that doesn't fit. */}
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:grid-flow-dense lg:grid-cols-3">
+          summary + metric badge, not a forced shape that doesn't fit.
+          `items-start`: CSS Grid's own default (`align-items: stretch`)
+          would otherwise stretch every card in a row to match its tallest
+          sibling regardless of span -- at `lg:` specifically, dense flow
+          packs a normal card into the same row as the much-taller featured
+          tile, which was leaving a large empty gap below that card's own
+          (much shorter) content. */}
+      <div className="grid grid-cols-1 items-start gap-6 sm:grid-cols-2 sm:grid-flow-dense lg:grid-cols-3">
         {projects.map((project, i) => (
           <ProjectCard
             key={project.slug}

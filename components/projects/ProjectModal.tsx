@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import type { Project } from "@/data/projects";
 import { durations, easing } from "@/lib/motion";
+import PhotoCarousel from "@/components/ui/PhotoCarousel";
 
 export default function ProjectModal({
   project,
@@ -101,10 +102,50 @@ export default function ProjectModal({
               type="button"
               onClick={handleClose}
               aria-label="Close project details"
-              className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-ink/5 font-mono text-sm text-ink/70 hover:bg-ink/10"
+              // `bg-paper/70 backdrop-blur-sm`, not `.glass`'s usual
+              // treatment or a flat `bg-ink/5` -- matches PhotoCarousel's
+              // own circular-control convention so this stays legible
+              // whether it's sitting over the plain glass panel or
+              // directly on top of a project's cover image below.
+              className="absolute right-4 top-4 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-paper/70 font-mono text-sm text-ink backdrop-blur-sm transition-colors hover:bg-paper"
             >
               ×
             </button>
+
+            {/* Cover image/carousel -- the modal's own image slot (the
+                "overlay"), separate from the card's. Same `cover`/`images`
+                data as the card, so renders only when that data exists;
+                neither field being set (the two still-`placeholder`
+                projects) means no image block at all here, not a faked
+                placeholder. */}
+            {project.images && project.images.length > 0 ? (
+              <div className="-mx-6 -mt-6 mb-4 sm:-mx-8 sm:-mt-8 sm:mb-5">
+                <PhotoCarousel
+                  photos={project.images}
+                  reducedMotion={reducedMotion}
+                  aspectClassName="aspect-video"
+                  rounded="rounded-t-[2rem]"
+                />
+              </div>
+            ) : (
+              project.cover && (
+                // `object-contain` in a generously-tall (not aspect-locked)
+                // box, not `object-cover` in a fixed aspect-video crop --
+                // per direct request, the modal shows the whole image
+                // uncropped. `bg-ink/5` fills any letterbox space when the
+                // image's real aspect ratio doesn't match the box instead
+                // of leaving a jarring transparent/white gap.
+                <div className="relative -mx-6 -mt-6 mb-4 h-[22rem] w-[calc(100%+3rem)] overflow-hidden rounded-t-[2rem] bg-ink/5 sm:-mx-8 sm:-mt-8 sm:mb-5 sm:h-[26rem] sm:w-[calc(100%+4rem)]">
+                  <Image
+                    src={project.cover}
+                    alt={`${project.title} cover`}
+                    fill
+                    sizes="(min-width: 640px) 32rem, 100vw"
+                    className="object-contain"
+                  />
+                </div>
+              )
+            )}
 
             <h3
               id={`project-modal-title-${project.slug}`}
@@ -117,16 +158,26 @@ export default function ProjectModal({
               {project.summary}
             </p>
 
+            {project.details && project.details.length > 0 && (
+              <div className="mt-3 flex flex-col gap-2">
+                {project.details.map((detail, i) => (
+                  <p key={i} className="text-sm leading-relaxed text-ink/70">
+                    {detail}
+                  </p>
+                ))}
+              </div>
+            )}
+
             {project.placeholder && (
               <span className="mt-3 inline-block rounded-full border border-dashed border-ink/20 bg-ink/5 px-2.5 py-1 font-mono text-xs text-ink/65">
                 Write-up in progress
               </span>
             )}
 
-            {/* Optional blocks below render only when the data is present.
-                All 7 projects currently have these undefined (section 11:
-                no real assets yet), so none of these blocks render at all
-                right now — verified by the guards, not assumed. */}
+            {/* Optional blocks below render only when the data is present
+                -- guards verified, not assumed. FarmOS now has real
+                stack/metrics; the three `placeholder: true` projects still
+                have none of these set (section 11: no real assets yet). */}
 
             {project.stack.length > 0 && (
               <div className="mt-4 flex flex-wrap gap-1.5">

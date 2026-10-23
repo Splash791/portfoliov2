@@ -2,59 +2,26 @@
 
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import { useEffect } from "react";
+import Image from "next/image";
 import { durations, easing, useReducedMotionSafe } from "@/lib/motion";
 import Magnetic from "@/components/ui/Magnetic";
+import SectionBlobs, { type BlobConfig } from "@/components/ui/SectionBlobs";
 
 const NAME = "Tyler Quach";
 const ROLE = "CS @ Oregon State University";
 
-// Warm sunset + white only -- user feedback was the violet/rose mix read
-// as "floral" rather than sunset. Coral/amber/peach are the warm palette's
-// own sunset-adjacent tones; white is Tailwind's own (not a custom warm-
-// palette token, since the palette has no white/light entry) for a bright
-// haze rather than another saturated hue.
-const BLOBS = [
+// Earth tones + white only -- the original sunset palette's sage/rust mix
+// (then violet/rose) read as "floral" per direct feedback, so the hero
+// stays to the warmest three (terracotta/ochre/sand) plus a bright haze.
+// White is Tailwind's own (not a custom palette token, since the palette
+// has no white/light entry) for that haze rather than another saturated hue.
+const BLOBS: BlobConfig[] = [
   { color: "bg-coral", className: "left-[-10%] top-[-15%] h-[55vmax] w-[55vmax]", duration: 26 },
   { color: "bg-white", className: "right-[-18%] top-[5%] h-[45vmax] w-[45vmax]", duration: 32 },
   { color: "bg-amber", className: "left-[5%] bottom-[-25%] h-[42vmax] w-[42vmax]", duration: 22 },
   { color: "bg-coral", className: "right-[0%] bottom-[-20%] h-[36vmax] w-[36vmax]", duration: 28 },
   { color: "bg-peach", className: "left-[38%] top-[25%] h-[28vmax] w-[28vmax]", duration: 24 },
 ];
-
-function Blobs({ reducedMotion }: { reducedMotion: boolean }) {
-  // Under reduced motion these render as static shapes (no `animate` loop at
-  // all) rather than an animated one paused mid-frame — this is the gate,
-  // not a duration tweak.
-  if (reducedMotion) {
-    return (
-      <div aria-hidden className="absolute inset-0 -z-10 overflow-hidden">
-        {BLOBS.map((blob, i) => (
-          <div
-            key={i}
-            className={`absolute rounded-full opacity-50 blur-[90px] ${blob.color} ${blob.className}`}
-          />
-        ))}
-      </div>
-    );
-  }
-
-  return (
-    <div aria-hidden className="absolute inset-0 -z-10 overflow-hidden">
-      {BLOBS.map((blob, i) => (
-        <motion.div
-          key={i}
-          className={`absolute rounded-full opacity-50 blur-[90px] ${blob.color} ${blob.className}`}
-          animate={{
-            x: [0, 40, -24, 0],
-            y: [0, -32, 20, 0],
-            scale: [1, 1.08, 0.95, 1],
-          }}
-          transition={{ duration: blob.duration, repeat: Infinity, ease: "easeInOut" }}
-        />
-      ))}
-    </div>
-  );
-}
 
 export default function Hero() {
   const reducedMotion = useReducedMotionSafe();
@@ -98,7 +65,7 @@ export default function Hero() {
       // so the blobs cover the full first viewport edge-to-edge.
       className="relative flex min-h-dvh w-full items-center justify-center overflow-hidden px-6 py-16"
     >
-      <Blobs reducedMotion={!!reducedMotion} />
+      <SectionBlobs blobs={BLOBS} reducedMotion={!!reducedMotion} />
 
       {/* Static fade into the next (plain-paper) section -- not scroll- or
           motion-driven, so it needs no reduced-motion gate. Sits above the
@@ -193,18 +160,15 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        {/* TODO: no professional headshot available yet (section 11). */}
-        {/* `.glass`'s `border` shorthand would otherwise override a
-            `border-dashed` utility at equal specificity — set the dashed
-            style inline so it actually wins the cascade (same pattern as
-            About.tsx's photo placeholders). */}
-        <div
-          data-placeholder="headshot"
-          style={{ borderStyle: "dashed" }}
-          className="glass flex aspect-square w-64 shrink-0 flex-col items-center justify-center gap-3 rounded-[2rem] sm:w-80 lg:w-[26rem]"
-        >
-          <span className="font-serif text-6xl text-ink/75 lg:text-7xl">TQ</span>
-          <span className="font-mono text-xs text-ink/65 lg:text-sm">Headshot placeholder</span>
+        <div className="glass relative aspect-square w-64 shrink-0 overflow-hidden rounded-[2rem] sm:w-80 lg:w-[26rem]">
+          <Image
+            src="/portfoliov2-images/portfoliov2-hero.jpg"
+            alt="Tyler Quach"
+            fill
+            priority
+            sizes="(min-width: 1024px) 26rem, (min-width: 640px) 20rem, 16rem"
+            className="object-cover"
+          />
         </div>
       </motion.div>
     </section>

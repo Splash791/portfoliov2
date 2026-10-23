@@ -7,7 +7,7 @@ import { TRIP_PIN_COLORS, type Trip } from "@/data/trips";
 // Default export only (dynamically imported with { ssr: false } from
 // Travel.tsx) -- this file must never run on the server.
 
-const ARC_COLOR = "#8c7ae6";
+const ARC_COLOR = "#3a2c1e"; // espresso, matching --color-sage
 // Shared between `.arcAltitudeAutoScale()` (reduced-motion's static arcs)
 // and each animated leg's precomputed fixed altitude, so both read as the
 // same arc height.

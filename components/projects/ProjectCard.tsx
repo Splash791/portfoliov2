@@ -9,11 +9,11 @@ import PhotoCarousel from "@/components/ui/PhotoCarousel";
 // a generated gradient when absent — every project is missing one right now).
 const GRADIENTS = [
   "from-coral to-amber",
-  "from-violet to-rose",
+  "from-sage to-rose",
   "from-amber to-peach",
   "from-rose to-coral",
-  "from-peach to-violet",
-  "from-coral to-violet",
+  "from-peach to-sage",
+  "from-coral to-sage",
   "from-amber to-rose",
 ];
 
@@ -93,14 +93,14 @@ export default function ProjectCard({
         <PhotoCarousel
           photos={project.images}
           reducedMotion={reducedMotion}
-          aspectClassName={featured ? "h-48 lg:h-64" : "h-36"}
+          aspectClassName={featured ? "h-56 lg:h-72" : "h-52"}
           rounded="rounded-none"
           sizes={featured ? "(min-width: 1024px) 66vw, 100vw" : "(min-width: 1024px) 33vw, 100vw"}
           showControls={false}
         />
       ) : project.cover ? (
         <div
-          className={`relative w-full overflow-hidden ${featured ? "h-48 lg:h-64" : "h-36"}`}
+          className={`relative w-full overflow-hidden ${featured ? "h-56 lg:h-72" : "h-52"}`}
         >
           <Image
             src={project.cover}
@@ -113,15 +113,21 @@ export default function ProjectCard({
       ) : (
         <div
           aria-hidden
-          className={`w-full bg-gradient-to-br ${gradient} ${featured ? "h-48 lg:h-64" : "h-36"}`}
+          className={`w-full bg-gradient-to-br ${gradient} ${featured ? "h-56 lg:h-72" : "h-52"}`}
         />
       )}
       <div className="flex flex-1 flex-col gap-2 px-5 py-4">
         <h3 className={`font-serif text-ink ${featured ? "text-2xl" : "text-xl"}`}>
           {project.title}
         </h3>
+        {/* Featured cards show the full (unclamped) summary at the card's
+            full two-column width -- a max-w caps the reading measure there.
+            A fixed rem value, not `ch`: Geist's own `ch` glyph measures
+            wider than this font's real average character width, so a
+            `ch`-based cap under-constrains the line (same fix as
+            Experience.tsx's featured-card summary). */}
         <p
-          className={`text-sm leading-relaxed text-ink/70 ${featured ? "" : "line-clamp-2"}`}
+          className={`text-sm leading-relaxed text-ink/70 ${featured ? "max-w-[30rem]" : "line-clamp-2"}`}
         >
           {project.summary}
         </p>

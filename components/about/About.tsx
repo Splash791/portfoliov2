@@ -8,7 +8,7 @@ import PhotoCarousel from "@/components/ui/PhotoCarousel";
 // together, or swap in the user's own. Voice is locked: curious builder +
 // avid traveler. Keep this generic in content, specific in tone only.
 const LEAD =
-  "I like taking things apart until I understand how they work, then building my own version and shipping it. Outside of code, that same curiosity sends me chasing new cities, trains, and trail maps — travel's less a break from building and more another way to do it.";
+  "My software engineering background is focused on fullstack development and machine learning. Aside from that, I am passionate about fitness, food and traveling. More likely than not I am always trying to plan my next trip. ";
 
 export default function About() {
   const reducedMotion = useReducedMotionSafe();
