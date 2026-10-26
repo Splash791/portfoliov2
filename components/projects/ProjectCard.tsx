@@ -36,6 +36,14 @@ export default function ProjectCard({
   const stackPreview = project.stack.slice(0, 3);
   const featured = !!project.featured;
   const isPlaceholder = !!project.placeholder;
+  // Image-slot height: featured tiles are tallest; `coverTall` gives a
+  // near-square slot for portrait/square covers (phone mockups) so they
+  // aren't cropped to a thin band; everything else keeps the default band.
+  const coverHeight = featured
+    ? "h-56 lg:h-72"
+    : project.coverTall
+      ? "h-72 sm:h-80"
+      : "h-52";
 
   return (
     <motion.button
@@ -94,14 +102,14 @@ export default function ProjectCard({
         <PhotoCarousel
           photos={project.images}
           reducedMotion={reducedMotion}
-          aspectClassName={featured ? "h-56 lg:h-72" : "h-52"}
+          aspectClassName={coverHeight}
           rounded="rounded-none"
           sizes={featured ? "(min-width: 1024px) 66vw, 100vw" : "(min-width: 1024px) 33vw, 100vw"}
           showControls={false}
         />
       ) : project.cover ? (
         <div
-          className={`relative w-full overflow-hidden ${featured ? "h-56 lg:h-72" : "h-52"}`}
+          className={`relative w-full overflow-hidden ${coverHeight}`}
         >
           <Image
             src={project.cover}
@@ -114,7 +122,7 @@ export default function ProjectCard({
       ) : (
         <div
           aria-hidden
-          className={`w-full bg-gradient-to-br ${gradient} ${featured ? "h-56 lg:h-72" : "h-52"}`}
+          className={`w-full bg-gradient-to-br ${gradient} ${coverHeight}`}
         />
       )}
       <div className="flex flex-1 flex-col gap-2 px-5 py-4">

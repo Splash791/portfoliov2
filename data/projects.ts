@@ -23,6 +23,7 @@ export type Project = {
   stack: string[];
   links: { github?: string; demo?: string; devpost?: string };
   cover?: string; // single static image; falls back to a generated gradient when absent
+  coverTall?: boolean; // taller, near-square image slot -- for portrait/square covers (e.g. phone mockups) that a landscape slot would crop to a thin band
   images?: { src: string; alt: string }[]; // multiple images -> rendered as a carousel, takes priority over `cover`
   video?: string;
   screenshots?: string[];
@@ -129,6 +130,31 @@ export const projects: Project[] = [
       "Recharts",
     ],
     cover: "/portfoliov2-images/expense-tracker.png",
+    links: {},
+  },
+  {
+    slug: "stillbridge",
+    title: "Stillbridge",
+    summary:
+      "A travel companion that makes flying calmer for neurodivergent travelers. Stillbridge tracks your flight — route, boarding time, gate, terminal, and live status — then turns the airport into one manageable step at a time: plan your timing, find a quieter route to the gate, and explore the terminal map with calm, low-stimulation spots marked.",
+    details: [
+      "- A flight card shows route, boarding time, gate, terminal, and live status (e.g. \"On time\"), with a \"Simulate gate change\" live demo so a disruption can be rehearsed calmly instead of sprung on the traveler at the airport.",
+      "- \"Your next step\" breaks the journey down into a single calm action at a time — planning timing and finding a quieter, lower-stimulation route to the gate.",
+      "- An interactive terminal map (\"Explore SFO\") surfaces calm spots and quieter areas across the airport.",
+      "- A simple four-tab layout (Home, Map, My trip, Profile) and a soft, muted visual design are chosen deliberately to reduce sensory and cognitive load.",
+    ],
+    // TODO: real tech stack not yet known -- left empty rather than invented
+    // (the card/modal both hide the stack row when this is empty). Fill in
+    // once confirmed. Same for links.github / links.demo below.
+    stack: [
+      "Next.js (App Router)",
+      "TypeScript",
+      "React Native",
+      "Tailwind CSS",
+      "Convex"
+    ],
+    cover: "/portfoliov2-images/portfoliov2-stillbridge.png",
+    coverTall: true, // near-square phone mockup -- taller slot so it isn't cropped to a band
     links: {},
   },
 ];
